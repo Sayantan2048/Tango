@@ -52,8 +52,12 @@ protected:
     virtual void mousePressedRigidBody(OIS::MouseButtonID id);
     virtual void mouseMovedRigidBody(void);
     virtual void mouseReleasedRigidBody(void);
+
+private:
     void addNinja(void);
     void addGround(void);
+    void addLight(void);
+    void addOverlay(void);
 };
 
 //---------------------------------------------------------------------------

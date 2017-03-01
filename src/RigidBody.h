@@ -38,7 +38,9 @@ class RigidBody {
 	/* Body to World*/
 	glm::dmat4x4 b2w;
 
+	/* Inertia Tensor at default orientation */
 	glm::dmat3x3 iT_0;
+	/* Inertia Tensor at given orientation */
 	glm::dmat3x3 iT;
 
 	/* Inverse Inertia Tensor at default orientation */
@@ -58,7 +60,7 @@ class RigidBody {
 	btCollisionObject* collisionObject;
 	btConvexHullShape* simplifiedConvexShape;
 
-	/* Passed from main program, do not delete*/
+	/* Passed from main program, do not delete!!*/
 	btCollisionWorld *collisionWorld;
 
 	/* Must be called after initializing collisionObject */
@@ -81,11 +83,9 @@ public:
 	inline glm::dvec3 getScaledByIinv(const glm::dvec3 &vec) const {return iiT * vec;}
 	inline glm::dvec3 getLinearImpulse(double dt) const {return v + f * (dt * iMass);}
 	inline glm::dvec3 getAngularImpulse(double dt) const {return w + (constrained ? glm::dvec3(0,0,0) : iiT * ((t - glm::cross(w, iT * w)) * dt));}
-	inline void updateVelocity() {
-		//if (!constrained)
-		//	std::cout<<v.x<<" "<<v.y<<" "<<v.z<<" "<<deltaV.x<<" "<<deltaV.y<<" "<<deltaV.z<<std::endl;
-		v += deltaV; w += deltaW;
-	}
+	inline double getDotWithV(const glm::dvec3 &vec) const { return glm::dot(v, vec);}
+	inline double getDotWithW(const glm::dvec3 &vec) const { return glm::dot(w, vec);}
+	inline void updateVelocity() { v += deltaV; w += deltaW; deltaV = glm::dvec3(0,0,0); deltaW = glm::dvec3(0,0,0);}
 
 	glm::dvec4 getWorldToBody(glm::dvec4 world);
 	glm::dvec4 getBodyToWorld(glm::dvec4 body);

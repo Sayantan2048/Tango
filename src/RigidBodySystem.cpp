@@ -1,20 +1,3 @@
-/*
------------------------------------------------------------------------------
-Filename:    TutorialApplication.cpp
------------------------------------------------------------------------------
-
-This source file is part of the
-   ___                 __    __ _ _    _
-  /___\__ _ _ __ ___  / / /\ \ (_) | _(_)
- //  // _` | '__/ _ \ \ \/  \/ / | |/ / |
-/ \_// (_| | | |  __/  \  /\  /| |   <| |
-\___/ \__, |_|  \___|   \/  \/ |_|_|\_\_|
-      |___/
-Tutorial Framework (for Ogre 1.9)
-http://www.ogre3d.org/wiki/
------------------------------------------------------------------------------
-*/
-
 #include "RigidBodySystem.h"
 #include <iostream>
 
@@ -59,14 +42,7 @@ void RigidBodySystem::physicsInit(){
 	contacts.reserve(50);
 }
 
-void RigidBodySystem::createScene(void)
-{
-	physicsInit();
-
-	// Create your scene here :)
-	addNinja();
-	addGround();
-
+void RigidBodySystem::addLight(void) {
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.01, 0.01, 0.01));
 	Ogre::Light* directionalLight = mSceneMgr->createLight("DirectionalLight");
 	directionalLight->setType(Ogre::Light::LT_DIRECTIONAL);
@@ -75,19 +51,35 @@ void RigidBodySystem::createScene(void)
 	directionalLight->setDirection(Ogre::Vector3(0, -1, 1));
 
 	mSceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
+}
 
+void RigidBodySystem::addOverlay() {
 	Ogre::OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
 	// Create an overlay
 	Ogre::Overlay* crosshair = overlayManager.create("crosshair");
-    // Create a panel
-    Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", "PanelName" ) );
-    panel->setPosition( 0.495, 0.495);
-    panel->setDimensions(0.01, 0.01);
+	// Create a panel
+	Ogre::OverlayContainer* panel = static_cast<Ogre::OverlayContainer*>( overlayManager.createOverlayElement( "Panel", "PanelName" ) );
+	panel->setPosition( 0.495, 0.495);
+	panel->setDimensions(0.01, 0.01);
 	panel->setMaterialName("Examples/Cursor");
 	// Add the panel to the overlay
 	crosshair->add2D( panel );
-    // Show the overlay
-    crosshair->show();
+	// Show the overlay
+	crosshair->show();
+}
+
+void RigidBodySystem::createScene(void)
+{
+	physicsInit();
+
+	// Create your scene here :)
+	addNinja();
+	addGround();
+
+	addLight();
+
+	addOverlay();
+
 
     lineObject =  mSceneMgr->createManualObject("line");
     // NOTE: The second parameter to the create method is the resource group the material will be added to.
@@ -110,6 +102,9 @@ void RigidBodySystem::createScene(void)
 
 void RigidBodySystem::animate() {
 	double dt = 0.05;
+	double bounce = 0.2;
+	double mu = 0.33;
+
 	if (mouseButtonDown) {
 		unsigned long i = pickBody[selectedEntity];
 
@@ -123,14 +118,14 @@ void RigidBodySystem::animate() {
 				getSpringForce(glm::dvec3(startWorld), glm::dvec3(endPoint.x, endPoint.y, endPoint.z),
 				bodies[i].getContactVelocity(glm::dvec3(startWorld))));
 	}
-	for (int i = 0; i < bodies.size(); i++)
+	for (size_t i = 0; i < bodies.size(); i++)
 		bodies[i].applyForce(glm::dvec3(0, -1, 0));
 
 	collisionWorld->performDiscreteCollisionDetection();
 
 	int numManifolds = collisionWorld->getDispatcher()->getNumManifolds();
 
-	int numContacts = 1;
+	unsigned int numContacts = 1;
 	for (int i = 0; i < numManifolds; i++)
 		numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
 
@@ -144,28 +139,26 @@ void RigidBodySystem::animate() {
 		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
 		contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
 		int _numContacts = contactManifold->getNumContacts();
-		//std::cout<<numManifolds <<" "<<_numContacts<<std::endl;
 		//For each contact point in that manifold
 	    for (int j = 0; j < _numContacts; j++) {
 	      //Get the contact information
 	        btManifoldPoint& pt = contactManifold->getContactPoint(j);
 	        btVector3 contactPoint = (pt.getPositionWorldOnB());
-	        //std::cout<<-pt.m_normalWorldOnB.getX()<<" "<<-pt.m_normalWorldOnB.getY()<<" "<<-pt.m_normalWorldOnB.getZ()<<" "<<((RigidBody *)obB->getUserPointer())->index<< std::endl;
-
 	        contacts[numContacts] = Contact((RigidBody *)obA->getUserPointer(), (RigidBody *)obB->getUserPointer(),
 	        		glm::dvec3(contactPoint.getX(), contactPoint.getY(), contactPoint.getZ()),
-					glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), dt);
+					glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), bounce, dt);
 	        numContacts++;
 	    }
 	}
 
-	for (int j = 0; j < 50; j++) {
-		for (int i = 0; i < numContacts; i++)
-			contacts[i].processContact(0.33);
+	for (int j = 0; j < 50 && numContacts; j++) {
+		for (unsigned int i = 0; i < numContacts; i++)
+			contacts[i].processContact(mu);
 	}
 
-	for (int i = 0; i < bodies.size(); i++)
-		bodies[i].updateVelocity();
+	for (size_t i = 0; i < bodies.size() && numContacts; i++)
+			bodies[i].updateVelocity();
+
 
 	for (size_t i = 0; i < bodies.size(); i++)
 		bodies[i].advanceTime(dt);

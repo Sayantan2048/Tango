@@ -62,7 +62,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 
 		glm::dvec3 centroid((v1+v2+v3)/3.0);
 
-		double area = 0.5 * glm::cross((v1 - v2),(v1 - v3)).length() * massScale;
+		double area = 0.5 * glm::cross((v1 - v2),(v1 - v3)).length() * massScale * 10;
 		area = area > 0 ? area: -area;
 
 		Ixx += area * (centroid.z * centroid.z + centroid.y * centroid.y);

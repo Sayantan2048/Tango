@@ -1,524 +1,524 @@
-18:35:57: Creating resource group General
-18:35:57: Creating resource group Internal
-18:35:57: Creating resource group Autodetect
-18:35:57: SceneManagerFactory for type 'DefaultSceneManager' registered.
-18:35:57: Registering ResourceManager for type Material
-18:35:57: Registering ResourceManager for type Mesh
-18:35:57: Registering ResourceManager for type Skeleton
-18:35:57: MovableObjectFactory for type 'ParticleSystem' registered.
-18:35:57: ArchiveFactory for archive type FileSystem registered.
-18:35:57: ArchiveFactory for archive type Zip registered.
-18:35:57: ArchiveFactory for archive type EmbeddedZip registered.
-18:35:57: DDS codec registering
-18:35:57: FreeImage version: 3.15.4
-18:35:57: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
-18:35:57: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,3fr,arw,bay,bmq,cap,cine,cr2,crw,cs1,dc2,dcr,drf,dsc,dng,erf,fff,ia,iiq,k25,kc2,kdc,mdc,mef,mos,mrw,nef,nrw,orf,pef,ptx,pxn,qtk,raf,raw,rdc,rw2,rwl,rwz,sr2,srf,srw,sti
-18:35:57: Registering ResourceManager for type HighLevelGpuProgram
-18:35:57: Registering ResourceManager for type Compositor
-18:35:57: MovableObjectFactory for type 'Entity' registered.
-18:35:57: MovableObjectFactory for type 'Light' registered.
-18:35:57: MovableObjectFactory for type 'BillboardSet' registered.
-18:35:57: MovableObjectFactory for type 'ManualObject' registered.
-18:35:57: MovableObjectFactory for type 'BillboardChain' registered.
-18:35:57: MovableObjectFactory for type 'RibbonTrail' registered.
-18:35:57: Loading library /usr/local/lib/OGRE/RenderSystem_GL
-18:35:57: Installing plugin: GL RenderSystem
-18:35:57: OpenGL Rendering Subsystem created.
-18:35:57: Plugin successfully installed
-18:35:57: Loading library /usr/local/lib/OGRE/Plugin_ParticleFX
-18:35:57: Installing plugin: ParticleFX
-18:35:57: Particle Emitter Type 'Point' registered
-18:35:57: Particle Emitter Type 'Box' registered
-18:35:57: Particle Emitter Type 'Ellipsoid' registered
-18:35:57: Particle Emitter Type 'Cylinder' registered
-18:35:57: Particle Emitter Type 'Ring' registered
-18:35:57: Particle Emitter Type 'HollowEllipsoid' registered
-18:35:57: Particle Affector Type 'LinearForce' registered
-18:35:57: Particle Affector Type 'ColourFader' registered
-18:35:57: Particle Affector Type 'ColourFader2' registered
-18:35:57: Particle Affector Type 'ColourImage' registered
-18:35:57: Particle Affector Type 'ColourInterpolator' registered
-18:35:57: Particle Affector Type 'Scaler' registered
-18:35:57: Particle Affector Type 'Rotator' registered
-18:35:57: Particle Affector Type 'DirectionRandomiser' registered
-18:35:57: Particle Affector Type 'DeflectorPlane' registered
-18:35:57: Plugin successfully installed
-18:35:57: Loading library /usr/local/lib/OGRE/Plugin_BSPSceneManager
-18:35:57: Installing plugin: BSP Scene Manager
-18:35:57: Plugin successfully installed
-18:35:57: Loading library /usr/local/lib/OGRE/Plugin_PCZSceneManager
-18:35:57: Installing plugin: Portal Connected Zone Scene Manager
-18:35:57: PCZone Factory Type 'ZoneType_Default' registered
-18:35:57: Plugin successfully installed
-18:35:57: Loading library /usr/local/lib/OGRE/Plugin_OctreeZone
-18:35:57: Installing plugin: Octree Zone Factory
-18:35:57: Plugin successfully installed
-18:35:57: Loading library /usr/local/lib/OGRE/Plugin_OctreeSceneManager
-18:35:57: Installing plugin: Octree Scene Manager
-18:35:57: Plugin successfully installed
-18:35:57: *-*-* OGRE Initialising
-18:35:57: *-*-* Version 1.9.0 (Ghadamon)
-18:35:57: Creating resource group Essential
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/thumbnails' of type 'FileSystem' to resource group 'Essential'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/SdkTrays.zip' of type 'Zip' to resource group 'Essential'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/profiler.zip' of type 'Zip' to resource group 'Essential'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media' of type 'FileSystem' to resource group 'General'
-18:35:57: Creating resource group Popular
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/programs/GLSL' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/fonts' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/programs' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/scripts' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures/nvidia' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/models' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/particle' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/DeferredShadingMedia' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/PCZAppMedia' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/RTShaderLib' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/RTShaderLib/materials' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/scripts/SSAO' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures/SSAO' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/volumeTerrain' of type 'FileSystem' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/cubemap.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/cubemapsJS.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/dragon.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/fresneldemo.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/ogretestmap.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/ogredance.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/Sinbad.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/packs/skybox.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Added resource location '/home/sayantan/ogre/Samples/Media/volumeTerrain/volumeTerrainBig.zip' of type 'Zip' to resource group 'Popular'
-18:35:57: Creating resource group Tests
-18:35:57: Added resource location '/home/sayantan/ogre/Tests/Media' of type 'FileSystem' to resource group 'Tests'
-18:36:04: CPU Identifier & Features
-18:36:04: -------------------------
-18:36:04:  *   CPU ID: GenuineIntel: Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz
-18:36:04:  *      SSE: yes
-18:36:04:  *     SSE2: yes
-18:36:04:  *     SSE3: yes
-18:36:04:  *      MMX: yes
-18:36:04:  *   MMXEXT: yes
-18:36:04:  *    3DNOW: no
-18:36:04:  * 3DNOWEXT: no
-18:36:04:  *     CMOV: yes
-18:36:04:  *      TSC: yes
-18:36:04:  *      FPU: yes
-18:36:04:  *      PRO: yes
-18:36:04:  *       HT: no
-18:36:04: -------------------------
-18:36:04: ******************************
+13:06:27: Creating resource group General
+13:06:27: Creating resource group Internal
+13:06:27: Creating resource group Autodetect
+13:06:27: SceneManagerFactory for type 'DefaultSceneManager' registered.
+13:06:27: Registering ResourceManager for type Material
+13:06:27: Registering ResourceManager for type Mesh
+13:06:27: Registering ResourceManager for type Skeleton
+13:06:27: MovableObjectFactory for type 'ParticleSystem' registered.
+13:06:27: ArchiveFactory for archive type FileSystem registered.
+13:06:27: ArchiveFactory for archive type Zip registered.
+13:06:27: ArchiveFactory for archive type EmbeddedZip registered.
+13:06:27: DDS codec registering
+13:06:27: FreeImage version: 3.15.4
+13:06:27: This program uses FreeImage, a free, open source image library supporting all common bitmap formats. See http://freeimage.sourceforge.net for details
+13:06:27: Supported formats: bmp,ico,jpg,jif,jpeg,jpe,jng,koa,iff,lbm,mng,pbm,pbm,pcd,pcx,pgm,pgm,png,ppm,ppm,ras,tga,targa,tif,tiff,wap,wbmp,wbm,psd,cut,xbm,xpm,gif,hdr,g3,sgi,exr,j2k,j2c,jp2,pfm,pct,pict,pic,3fr,arw,bay,bmq,cap,cine,cr2,crw,cs1,dc2,dcr,drf,dsc,dng,erf,fff,ia,iiq,k25,kc2,kdc,mdc,mef,mos,mrw,nef,nrw,orf,pef,ptx,pxn,qtk,raf,raw,rdc,rw2,rwl,rwz,sr2,srf,srw,sti
+13:06:27: Registering ResourceManager for type HighLevelGpuProgram
+13:06:27: Registering ResourceManager for type Compositor
+13:06:27: MovableObjectFactory for type 'Entity' registered.
+13:06:27: MovableObjectFactory for type 'Light' registered.
+13:06:27: MovableObjectFactory for type 'BillboardSet' registered.
+13:06:27: MovableObjectFactory for type 'ManualObject' registered.
+13:06:27: MovableObjectFactory for type 'BillboardChain' registered.
+13:06:27: MovableObjectFactory for type 'RibbonTrail' registered.
+13:06:27: Loading library /usr/local/lib/OGRE/RenderSystem_GL
+13:06:27: Installing plugin: GL RenderSystem
+13:06:27: OpenGL Rendering Subsystem created.
+13:06:27: Plugin successfully installed
+13:06:27: Loading library /usr/local/lib/OGRE/Plugin_ParticleFX
+13:06:27: Installing plugin: ParticleFX
+13:06:27: Particle Emitter Type 'Point' registered
+13:06:27: Particle Emitter Type 'Box' registered
+13:06:27: Particle Emitter Type 'Ellipsoid' registered
+13:06:27: Particle Emitter Type 'Cylinder' registered
+13:06:27: Particle Emitter Type 'Ring' registered
+13:06:27: Particle Emitter Type 'HollowEllipsoid' registered
+13:06:27: Particle Affector Type 'LinearForce' registered
+13:06:27: Particle Affector Type 'ColourFader' registered
+13:06:27: Particle Affector Type 'ColourFader2' registered
+13:06:27: Particle Affector Type 'ColourImage' registered
+13:06:27: Particle Affector Type 'ColourInterpolator' registered
+13:06:27: Particle Affector Type 'Scaler' registered
+13:06:27: Particle Affector Type 'Rotator' registered
+13:06:27: Particle Affector Type 'DirectionRandomiser' registered
+13:06:27: Particle Affector Type 'DeflectorPlane' registered
+13:06:27: Plugin successfully installed
+13:06:27: Loading library /usr/local/lib/OGRE/Plugin_BSPSceneManager
+13:06:27: Installing plugin: BSP Scene Manager
+13:06:27: Plugin successfully installed
+13:06:27: Loading library /usr/local/lib/OGRE/Plugin_PCZSceneManager
+13:06:27: Installing plugin: Portal Connected Zone Scene Manager
+13:06:27: PCZone Factory Type 'ZoneType_Default' registered
+13:06:27: Plugin successfully installed
+13:06:27: Loading library /usr/local/lib/OGRE/Plugin_OctreeZone
+13:06:27: Installing plugin: Octree Zone Factory
+13:06:27: Plugin successfully installed
+13:06:27: Loading library /usr/local/lib/OGRE/Plugin_OctreeSceneManager
+13:06:27: Installing plugin: Octree Scene Manager
+13:06:27: Plugin successfully installed
+13:06:27: *-*-* OGRE Initialising
+13:06:27: *-*-* Version 1.9.0 (Ghadamon)
+13:06:27: Creating resource group Essential
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/thumbnails' of type 'FileSystem' to resource group 'Essential'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/SdkTrays.zip' of type 'Zip' to resource group 'Essential'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/profiler.zip' of type 'Zip' to resource group 'Essential'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media' of type 'FileSystem' to resource group 'General'
+13:06:27: Creating resource group Popular
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/programs/GLSL' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/fonts' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/programs' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/scripts' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures/nvidia' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/models' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/particle' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/DeferredShadingMedia' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/PCZAppMedia' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/RTShaderLib' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/RTShaderLib/materials' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/scripts/SSAO' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/materials/textures/SSAO' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/volumeTerrain' of type 'FileSystem' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/cubemap.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/cubemapsJS.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/dragon.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/fresneldemo.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/ogretestmap.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/ogredance.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/Sinbad.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/packs/skybox.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Added resource location '/home/sayantan/ogre/Samples/Media/volumeTerrain/volumeTerrainBig.zip' of type 'Zip' to resource group 'Popular'
+13:06:27: Creating resource group Tests
+13:06:27: Added resource location '/home/sayantan/ogre/Tests/Media' of type 'FileSystem' to resource group 'Tests'
+13:06:29: CPU Identifier & Features
+13:06:29: -------------------------
+13:06:29:  *   CPU ID: GenuineIntel: Intel(R) Core(TM) i5-2500 CPU @ 3.30GHz
+13:06:29:  *      SSE: yes
+13:06:29:  *     SSE2: yes
+13:06:29:  *     SSE3: yes
+13:06:29:  *      MMX: yes
+13:06:29:  *   MMXEXT: yes
+13:06:29:  *    3DNOW: no
+13:06:29:  * 3DNOWEXT: no
+13:06:29:  *     CMOV: yes
+13:06:29:  *      TSC: yes
+13:06:29:  *      FPU: yes
+13:06:29:  *      PRO: yes
+13:06:29:  *       HT: no
+13:06:29: -------------------------
+13:06:29: ******************************
 *** Starting GLX Subsystem ***
 ******************************
-18:36:04: Registering ResourceManager for type Texture
-18:36:04: GLRenderSystem::_createRenderWindow "TutorialApplication Render Window", 1280x720 windowed  miscParams: FSAA=0 displayFrequency=60 Hz gamma=No vsync=No 
-18:36:04: GLXWindow::create used FBConfigID = 39
-18:36:04: GL_VERSION = 4.5.13416 Compatibility Profile Context 15.302
-18:36:04: GL_VENDOR = ATI Technologies Inc.
-18:36:04: GL_RENDERER = AMD Radeon R9 200 / HD 7900 Series
-18:36:04: GL_EXTENSIONS = GL_AMDX_debug_output GL_AMD_blend_minmax_factor GL_AMD_conservative_depth GL_AMD_debug_output GL_AMD_depth_clamp_separate GL_AMD_draw_buffers_blend GL_AMD_framebuffer_sample_positions GL_AMD_gcn_shader GL_AMD_gpu_shader_int64 GL_AMD_interleaved_elements GL_AMD_multi_draw_indirect GL_AMD_name_gen_delete GL_AMD_performance_monitor GL_AMD_pinned_memory GL_AMD_query_buffer_object GL_AMD_sample_positions GL_AMD_seamless_cubemap_per_texture GL_AMD_shader_atomic_counter_ops GL_AMD_shader_stencil_export GL_AMD_shader_stencil_value_export GL_AMD_shader_trace GL_AMD_shader_trinary_minmax GL_AMD_stencil_operation_extended GL_AMD_texture_cube_map_array GL_AMD_texture_texture4 GL_AMD_transform_feedback3_lines_triangles GL_AMD_transform_feedback4 GL_AMD_vertex_shader_layer GL_AMD_vertex_shader_viewport_index GL_ARB_ES2_compatibility GL_ARB_ES3_1_compatibility GL_ARB_ES3_compatibility GL_ARB_arrays_of_arrays GL_ARB_base_instance GL_ARB_bindless_texture GL_ARB_blend_func_extended GL_ARB_buffer_storage GL_ARB_clear_buffer_object GL_ARB_clear_texture GL_ARB_clip_control GL_ARB_color_buffer_float GL_ARB_compatibility GL_ARB_compressed_texture_pixel_storage GL_ARB_compute_shader GL_ARB_conditional_render_inverted GL_ARB_conservative_depth GL_ARB_copy_buffer GL_ARB_copy_image GL_ARB_cull_distance GL_ARB_debug_output GL_ARB_depth_buffer_float GL_ARB_depth_clamp GL_ARB_depth_texture GL_ARB_derivative_control GL_ARB_direct_state_access GL_ARB_draw_buffers GL_ARB_draw_buffers_blend GL_ARB_draw_elements_base_vertex GL_ARB_draw_indirect GL_ARB_draw_instanced GL_ARB_enhanced_layouts GL_ARB_explicit_attrib_location GL_ARB_explicit_uniform_location GL_ARB_fragment_coord_conventions GL_ARB_fragment_layer_viewport GL_ARB_fragment_program GL_ARB_fragment_program_shadow GL_ARB_fragment_shader GL_ARB_framebuffer_no_attachments GL_ARB_framebuffer_object GL_ARB_framebuffer_sRGB GL_ARB_geometry_shader4 GL_ARB_get_program_binary GL_ARB_get_texture_sub_image GL_ARB_gpu_shader5 GL_ARB_gpu_shader_fp64 GL_ARB_half_float_pixel GL_ARB_half_float_vertex GL_ARB_imaging GL_ARB_indirect_parameters GL_ARB_instanced_arrays GL_ARB_internalformat_query GL_ARB_internalformat_query2 GL_ARB_invalidate_subdata GL_ARB_map_buffer_alignment GL_ARB_map_buffer_range GL_ARB_multi_bind GL_ARB_multi_draw_indirect GL_ARB_multisample GL_ARB_multitexture GL_ARB_occlusion_query GL_ARB_occlusion_query2 GL_ARB_pipeline_statistics_query GL_ARB_pixel_buffer_object GL_ARB_point_parameters GL_ARB_point_sprite GL_ARB_program_interface_query GL_ARB_provoking_vertex GL_ARB_query_buffer_object GL_ARB_robust_buffer_access_behavior GL_ARB_sample_shading GL_ARB_sampler_objects GL_ARB_seamless_cube_map GL_ARB_seamless_cubemap_per_texture GL_ARB_separate_shader_objects GL_ARB_shader_atomic_counters GL_ARB_shader_bit_encoding GL_ARB_shader_draw_parameters GL_ARB_shader_group_vote GL_ARB_shader_image_load_store GL_ARB_shader_image_size GL_ARB_shader_objects GL_ARB_shader_precision GL_ARB_shader_stencil_export GL_ARB_shader_storage_buffer_object GL_ARB_shader_subroutine GL_ARB_shader_texture_image_samples GL_ARB_shader_texture_lod GL_ARB_shading_language_100 GL_ARB_shading_language_420pack GL_ARB_shading_language_packing GL_ARB_shadow GL_ARB_shadow_ambient GL_ARB_stencil_texturing GL_ARB_sync GL_ARB_tessellation_shader GL_ARB_texture_barrier GL_ARB_texture_border_clamp GL_ARB_texture_buffer_object GL_ARB_texture_buffer_object_rgb32 GL_ARB_texture_buffer_range GL_ARB_texture_compression GL_ARB_texture_compression_bptc GL_ARB_texture_compression_rgtc GL_ARB_texture_cube_map GL_ARB_texture_cube_map_array GL_ARB_texture_env_add GL_ARB_texture_env_combine GL_ARB_texture_env_crossbar GL_ARB_texture_env_dot3 GL_ARB_texture_float GL_ARB_texture_gather GL_ARB_texture_mirror_clamp_to_edge GL_ARB_texture_mirrored_repeat GL_ARB_texture_multisample GL_ARB_texture_non_power_of_two GL_ARB_texture_query_levels GL_ARB_texture_query_lod GL_ARB_texture_rectangle GL_ARB_texture_rg GL_ARB_texture_rgb10_a2ui GL_ARB_texture_snorm GL_ARB_texture_stencil8 GL_ARB_texture_storage GL_ARB_texture_storage_multisample GL_ARB_texture_swizzle GL_ARB_texture_view GL_ARB_timer_query GL_ARB_transform_feedback2 GL_ARB_transform_feedback3 GL_ARB_transform_feedback_instanced GL_ARB_transform_feedback_overflow_query GL_ARB_transpose_matrix GL_ARB_uniform_buffer_object GL_ARB_vertex_array_bgra GL_ARB_vertex_array_object GL_ARB_vertex_attrib_64bit GL_ARB_vertex_attrib_binding GL_ARB_vertex_buffer_object GL_ARB_vertex_program GL_ARB_vertex_shader GL_ARB_vertex_type_10f_11f_11f_rev GL_ARB_vertex_type_2_10_10_10_rev GL_ARB_viewport_array GL_ARB_window_pos GL_ATI_draw_buffers GL_ATI_envmap_bumpmap GL_ATI_fragment_shader GL_ATI_meminfo GL_ATI_separate_stencil GL_ATI_texture_compression_3dc GL_ATI_texture_env_combine3 GL_ATI_texture_float GL_ATI_texture_mirror_once GL_EXT_abgr GL_EXT_bgra GL_EXT_bindable_uniform GL_EXT_blend_color GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_compiled_vertex_array GL_EXT_copy_buffer GL_EXT_copy_texture GL_EXT_depth_bounds_test GL_EXT_direct_state_access GL_EXT_draw_buffers2 GL_EXT_draw_instanced GL_EXT_draw_range_elements GL_EXT_fog_coord GL_EXT_framebuffer_blit GL_EXT_framebuffer_multisample GL_EXT_framebuffer_object GL_EXT_framebuffer_sRGB GL_EXT_geometry_shader4 GL_EXT_gpu_program_parameters GL_EXT_gpu_shader4 GL_EXT_histogram GL_EXT_multi_draw_arrays GL_EXT_packed_depth_stencil GL_EXT_packed_float GL_EXT_packed_pixels GL_EXT_pixel_buffer_object GL_EXT_point_parameters GL_EXT_polygon_offset_clamp GL_EXT_provoking_vertex GL_EXT_rescale_normal GL_EXT_secondary_color GL_EXT_separate_specular_color GL_EXT_shader_image_load_store GL_EXT_shader_integer_mix GL_EXT_shadow_funcs GL_EXT_stencil_wrap GL_EXT_subtexture GL_EXT_texgen_reflection GL_EXT_texture3D GL_EXT_texture_array GL_EXT_texture_buffer_object GL_EXT_texture_compression_bptc GL_EXT_texture_compression_latc GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_cube_map GL_EXT_texture_edge_clamp GL_EXT_texture_env_add GL_EXT_texture_env_combine GL_EXT_texture_env_dot3 GL_EXT_texture_filter_anisotropic GL_EXT_texture_integer GL_EXT_texture_lod GL_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp GL_EXT_texture_object GL_EXT_texture_rectangle GL_EXT_texture_sRGB GL_EXT_texture_sRGB_decode GL_EXT_texture_shared_exponent GL_EXT_texture_snorm GL_EXT_texture_storage GL_EXT_texture_swizzle GL_EXT_timer_query GL_EXT_transform_feedback GL_EXT_vertex_array GL_EXT_vertex_array_bgra GL_EXT_vertex_attrib_64bit GL_IBM_texture_mirrored_repeat GL_INTEL_fragment_shader_ordering GL_KHR_context_flush_control GL_KHR_debug GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KTX_buffer_region GL_NV_blend_square GL_NV_conditional_render GL_NV_copy_depth_to_color GL_NV_copy_image GL_NV_depth_buffer_float GL_NV_explicit_multisample GL_NV_float_buffer GL_NV_half_float GL_NV_primitive_restart GL_NV_texgen_reflection GL_NV_texture_barrier GL_OES_EGL_image GL_SGIS_generate_mipmap GL_SGIS_texture_edge_clamp GL_SGIS_texture_lod GL_SUN_multi_draw_arrays GL_WIN_swap_hint
-18:36:04: Supported GLX extensions: GLX_ARB_create_context GLX_ARB_create_context_profile GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_import_context GLX_EXT_swap_control GLX_EXT_visual_info GLX_EXT_visual_rating GLX_MESA_swap_control GLX_NV_swap_group GLX_OML_swap_method GLX_SGI_make_current_read GLX_SGI_swap_control GLX_SGI_video_sync GLX_SGIS_multisample GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGIX_swap_barrier GLX_SGIX_swap_group GLX_SGIX_visual_select_group GLX_EXT_texture_from_pixmap GLX_EXT_buffer_age GLX_ARB_context_flush_control 
-18:36:04: ***************************
-18:36:04: *** GL Renderer Started ***
-18:36:04: ***************************
-18:36:04: Registering ResourceManager for type GpuProgram
-18:36:04: GLSL support detected
-18:36:04: GL: Using GL_EXT_framebuffer_object for rendering to textures (best)
-18:36:04: FBO PF_UNKNOWN depth/stencil support: D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_L8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_L16 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A4L4 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_BYTE_LA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_R5G6B5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_B5G6R5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A4R4G4B4 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A1R5G5B5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_B8G8R8A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A2R10G10B10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_A2B10G10R10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT16_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT16_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT32_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT32_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_X8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_X8B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_SHORT_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_R3G3B2 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT16_R depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT32_R depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_SHORT_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT16_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_FLOAT32_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: FBO PF_SHORT_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
-18:36:04: [GL] : Valid FBO targets PF_UNKNOWN PF_L8 PF_L16 PF_A8 PF_A4L4 PF_BYTE_LA PF_R5G6B5 PF_B5G6R5 PF_A4R4G4B4 PF_A1R5G5B5 PF_R8G8B8 PF_B8G8R8 PF_A8R8G8B8 PF_B8G8R8A8 PF_A2R10G10B10 PF_A2B10G10R10 PF_FLOAT16_RGB PF_FLOAT16_RGBA PF_FLOAT32_RGB PF_FLOAT32_RGBA PF_X8R8G8B8 PF_X8B8G8R8 PF_SHORT_RGBA PF_R3G3B2 PF_FLOAT16_R PF_FLOAT32_R PF_SHORT_GR PF_FLOAT16_GR PF_FLOAT32_GR PF_SHORT_RGB 
-18:36:04: RenderSystem capabilities
-18:36:04: -------------------------
-18:36:04: RenderSystem Name: OpenGL Rendering Subsystem
-18:36:04: GPU Vendor: amd
-18:36:04: Device Name: AMD Radeon R9 200 / HD 7900 Series
-18:36:04: Driver Version: 4.5.13416.0
-18:36:04:  * Fixed function pipeline: yes
-18:36:04:  * Hardware generation of mipmaps: no
-18:36:04:  * Texture blending: yes
-18:36:04:  * Anisotropic texture filtering: yes
-18:36:04:  * Dot product texture operation: yes
-18:36:04:  * Cube mapping: yes
-18:36:04:  * Hardware stencil buffer: yes
-18:36:04:    - Stencil depth: 8
-18:36:04:    - Two sided stencil support: yes
-18:36:04:    - Wrap stencil values: yes
-18:36:04:  * Hardware vertex / index buffers: yes
-18:36:04:  * 32-bit index buffers: yes
-18:36:04:  * Vertex programs: yes
-18:36:04:  * Number of floating-point constants for vertex programs: 256
-18:36:04:  * Number of integer constants for vertex programs: 0
-18:36:04:  * Number of boolean constants for vertex programs: 0
-18:36:04:  * Fragment programs: yes
-18:36:04:  * Number of floating-point constants for fragment programs: 256
-18:36:04:  * Number of integer constants for fragment programs: 0
-18:36:04:  * Number of boolean constants for fragment programs: 0
-18:36:04:  * Geometry programs: yes
-18:36:04:  * Number of floating-point constants for geometry programs: 16384
-18:36:04:  * Number of integer constants for geometry programs: 0
-18:36:04:  * Number of boolean constants for geometry programs: 0
-18:36:04:  * Tesselation Hull programs: no
-18:36:04:  * Number of floating-point constants for tesselation hull programs: 46073
-18:36:04:  * Number of integer constants for tesselation hull programs: 40927
-18:36:04:  * Number of boolean constants for tesselation hull programs: 45532
-18:36:04:  * Tesselation Domain programs: no
-18:36:04:  * Number of floating-point constants for tesselation domain programs: 16888
-18:36:04:  * Number of integer constants for tesselation domain programs: 14265
-18:36:04:  * Number of boolean constants for tesselation domain programs: 55320
-18:36:04:  * Compute programs: no
-18:36:04:  * Number of floating-point constants for compute programs: 65217
-18:36:04:  * Number of integer constants for compute programs: 65090
-18:36:04:  * Number of boolean constants for compute programs: 18577
-18:36:04:  * Supported Shader Profiles: arbfp1 arbvp1 glsl glsl100 glsl110 glsl120 gp4gp gpu_gp nvgp4 ps_1_1 ps_1_2 ps_1_3 ps_1_4
-18:36:04:  * Texture Compression: yes
-18:36:04:    - DXT: yes
-18:36:04:    - VTC: no
-18:36:04:    - PVRTC: no
-18:36:04:    - ATC: no
-18:36:04:    - ETC1: no
-18:36:04:    - ETC2: no
-18:36:04:    - BC4/BC5: no
-18:36:04:    - BC6H/BC7: no
-18:36:04:  * Scissor Rectangle: yes
-18:36:04:  * Hardware Occlusion Query: yes
-18:36:04:  * User clip planes: yes
-18:36:04:  * VET_UBYTE4 vertex element type: yes
-18:36:04:  * Infinite far plane projection: yes
-18:36:04:  * Hardware render-to-texture: yes
-18:36:04:  * Floating point textures: yes
-18:36:04:  * Non-power-of-two textures: yes
-18:36:04:  * 1d textures: yes
-18:36:04:  * Volume textures: yes
-18:36:04:  * Multiple Render Targets: 8
-18:36:04:    - With different bit depths: yes
-18:36:04:  * Point Sprites: yes
-18:36:04:  * Extended point parameters: yes
-18:36:04:  * Max Point Size: 8192
-18:36:04:  * Vertex texture fetch: yes
-18:36:04:  * Number of world matrices: 0
-18:36:04:  * Number of texture units: 16
-18:36:04:  * Stencil buffer depth: 8
-18:36:04:  * Number of vertex blend matrices: 0
-18:36:04:    - Max vertex textures: 32
-18:36:04:    - Vertex textures shared: yes
-18:36:04:  * Render to Vertex Buffer : no
-18:36:04:  * Hardware Atomic Counters: no
-18:36:04:  * GL 1.5 without VBO workaround: no
-18:36:04:  * Frame Buffer objects: yes
-18:36:04:  * Frame Buffer objects (ARB extension): no
-18:36:04:  * Frame Buffer objects (ATI extension): no
-18:36:04:  * PBuffer support: yes
-18:36:04:  * GL 1.5 without HW-occlusion workaround: no
-18:36:04:  * Vertex Array Objects: no
-18:36:04:  * Separate shader objects: no
-18:36:04: DefaultWorkQueue('Root') initialising on thread 7fe184d53840.
-18:36:04: DefaultWorkQueue('Root')::WorkerFunc - thread 7fe172efc700 starting.
-18:36:04: Particle Renderer Type 'billboard' registered
-18:36:04: DefaultWorkQueue('Root')::WorkerFunc - thread 7fe1736fd700 starting.
-18:36:04: DefaultWorkQueue('Root')::WorkerFunc - thread 7fe173efe700 starting.
-18:36:04: DefaultWorkQueue('Root')::WorkerFunc - thread 7fe1726fb700 starting.
-18:36:04: SceneManagerFactory for type 'BspSceneManager' registered.
-18:36:04: Registering ResourceManager for type BspLevel
-18:36:04: SceneManagerFactory for type 'PCZSceneManager' registered.
-18:36:04: MovableObjectFactory for type 'PCZLight' registered.
-18:36:04: MovableObjectFactory for type 'Portal' registered.
-18:36:04: MovableObjectFactory for type 'AntiPortal' registered.
-18:36:04: PCZone Factory Type 'ZoneType_Octree' registered
-18:36:04: SceneManagerFactory for type 'OctreeSceneManager' registered.
-18:36:04: OverlayElementFactory for type Panel registered.
-18:36:04: OverlayElementFactory for type BorderPanel registered.
-18:36:04: OverlayElementFactory for type TextArea registered.
-18:36:04: Registering ResourceManager for type Font
-18:36:04: Parsing scripts for resource group Autodetect
-18:36:04: Finished parsing scripts for resource group Autodetect
-18:36:04: Creating resources for group Autodetect
-18:36:04: All done
-18:36:04: Parsing scripts for resource group Essential
-18:36:04: Parsing script SdkTrays.material
-18:36:04: Parsing script OgreProfiler.material
-18:36:04: Parsing script SdkTrays.fontdef
-18:36:04: Parsing script SdkTrays.overlay
-18:36:04: Texture: sdk_cursor.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_tray.png: Loading 1 faces(PF_A8R8G8B8,64x64x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x64x1.
-18:36:04: Texture: sdk_button_up.png: Loading 1 faces(PF_A8R8G8B8,128x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,128x32x1.
-18:36:04: Texture: sdk_text_box.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_mini_tray.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_track.png: Loading 1 faces(PF_A8R8G8B8,16x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,16x32x1.
-18:36:04: Texture: sdk_handle.png: Loading 1 faces(PF_A8R8G8B8,16x16x1) with 4 generated mipmaps from Image. Internal format is PF_A8R8G8B8,16x16x1.
-18:36:04: Texture: sdk_mini_text_box.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_label.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_separator.png: Loading 1 faces(PF_A8R8G8B8,64x16x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x16x1.
-18:36:04: Texture: sdk_logo.png: Loading 1 faces(PF_A8R8G8B8,128x64x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,128x64x1.
-18:36:04: Texture: sdk_shade.png: Loading 1 faces(PF_A8R8G8B8,64x48x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x48x1.
-18:36:04: Texture: sdk_frame.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_mini_text_box_over.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
-18:36:04: Texture: sdk_pulse.png: Loading 1 faces(PF_R8G8B8,8x1x1) with 3 generated mipmaps from Image. Internal format is PF_X8R8G8B8,8x1x1.
-18:36:04: Finished parsing scripts for resource group Essential
-18:36:04: Creating resources for group Essential
-18:36:04: All done
-18:36:04: Parsing scripts for resource group General
-18:36:04: Finished parsing scripts for resource group General
-18:36:04: Creating resources for group General
-18:36:04: All done
-18:36:04: Parsing scripts for resource group Internal
-18:36:04: Finished parsing scripts for resource group Internal
-18:36:04: Creating resources for group Internal
-18:36:04: All done
-18:36:04: Parsing scripts for resource group Popular
-18:36:04: Parsing script Examples.program
-18:36:04: Parsing script Instancing.program
-18:36:04: Parsing script DualQuaternion.program
-18:36:04: Parsing script StdQuad_vp.program
-18:36:04: Parsing script deferred_post.program
-18:36:04: Parsing script ShadowCaster.program
-18:36:04: Parsing script GBuffer.program
-18:36:04: Parsing script triplanarReference.program
-18:36:04: Parsing script Halftone.material
-18:36:04: Parsing script SharpenEdges.material
-18:36:04: Parsing script Ogre.material
-18:36:04: Parsing script MRTtest.material
-18:36:04: Parsing script OldMovie.material
-18:36:04: Parsing script Hurt.material
-18:36:04: Parsing script ShaderSystem.material
-18:36:04: Parsing script DualQuaternion.material
-18:36:04: Parsing script VarianceShadowmap.material
-18:36:04: Parsing script HW_VTFInstancing.material
-18:36:04: Parsing script VTFInstancing.material
-18:36:04: Parsing script Examples-Advanced.material
-18:36:04: Compiler error: object unsupported by render system in Examples-Advanced.material(1027): , Shader name: Examples/TextureArrayPSasm
-18:36:04: Parsing script pssm.material
-18:36:04: Parsing script shadows.material
-18:36:04: Parsing script BlackAndWhite.material
-18:36:04: Parsing script ShaderInstancing.material
-18:36:04: Parsing script OffsetMapping.material
-18:36:04: Parsing script Embossed.material
-18:36:04: Parsing script AdaptivePNTrianglesTessellation.material
-18:36:04: Parsing script RasterizationOrder.material
-18:36:04: Parsing script Glass.material
-18:36:04: Parsing script smoke.material
-18:36:04: Parsing script ASMSwizzle.material
-18:36:04: Parsing script instancing.material
-18:36:04: Parsing script DepthShadowmap.material
-18:36:04: Parsing script Penguin.material
-18:36:04: Parsing script CompositorDemo.material
-18:36:04: Parsing script HWInstancing.material
-18:36:04: Parsing script Examples-Water.material
-18:36:04: Parsing script ASCII.material
-18:36:04: Parsing script Example-Water.material
-18:36:04: Parsing script RZR-002.material
-18:36:04: Parsing script ParticleGS.material
-18:36:04: Parsing script Bloom2.material
-18:36:04: Parsing script Tiling.material
-18:36:04: Parsing script RadialBlur.material
-18:36:04: Parsing script sibenik.material
-18:36:04: Parsing script Examples-DynTex.material
-18:36:04: Parsing script CGSwizzle.material
-18:36:04: Parsing script Laplace.material
-18:36:04: Parsing script Tesselation.material
-18:36:04: Parsing script HW_VTF_LUTInstancing.material
-18:36:04: Parsing script HeatVision.material
-18:36:04: Parsing script Dither.material
-18:36:04: Parsing script InstancingMisc.material
-18:36:04: Parsing script facial.material
-18:36:04: Parsing script DOF.material
-18:36:04: Parsing script Bloom.material
-18:36:04: Parsing script GLSLSwizzle.material
-18:36:04: Parsing script hdr.material
-18:36:04: Parsing script NightVision.material
-18:36:04: Parsing script Examples.material
-18:36:04: Parsing script Ocean.material
-18:36:04: Parsing script MotionBlur.material
-18:36:04: Parsing script IsoSurf.material
-18:36:04: Parsing script Posterize.material
-18:36:04: Parsing script OldTV.material
-18:36:04: Parsing script Invert.material
-18:36:04: Parsing script ssao.material
-18:36:04: Parsing script deferreddemo.material
-18:36:04: Parsing script deferred_post_minilight.material
-18:36:04: Parsing script ShadowCaster.material
-18:36:04: Parsing script deferred_post.material
-18:36:04: Parsing script ROOM.material
-18:36:04: Parsing script HardwareSkinningShadow.material
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_TwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_skinning_2weight_vs_glsl encountered an error during loading and is thus not supported.
+13:06:29: Registering ResourceManager for type Texture
+13:06:29: GLRenderSystem::_createRenderWindow "TutorialApplication Render Window", 1280x720 windowed  miscParams: FSAA=0 displayFrequency=60 Hz gamma=No vsync=No 
+13:06:29: GLXWindow::create used FBConfigID = 39
+13:06:29: GL_VERSION = 4.5.13416 Compatibility Profile Context 15.302
+13:06:29: GL_VENDOR = ATI Technologies Inc.
+13:06:29: GL_RENDERER = AMD Radeon R9 200 / HD 7900 Series
+13:06:29: GL_EXTENSIONS = GL_AMDX_debug_output GL_AMD_blend_minmax_factor GL_AMD_conservative_depth GL_AMD_debug_output GL_AMD_depth_clamp_separate GL_AMD_draw_buffers_blend GL_AMD_framebuffer_sample_positions GL_AMD_gcn_shader GL_AMD_gpu_shader_int64 GL_AMD_interleaved_elements GL_AMD_multi_draw_indirect GL_AMD_name_gen_delete GL_AMD_performance_monitor GL_AMD_pinned_memory GL_AMD_query_buffer_object GL_AMD_sample_positions GL_AMD_seamless_cubemap_per_texture GL_AMD_shader_atomic_counter_ops GL_AMD_shader_stencil_export GL_AMD_shader_stencil_value_export GL_AMD_shader_trace GL_AMD_shader_trinary_minmax GL_AMD_stencil_operation_extended GL_AMD_texture_cube_map_array GL_AMD_texture_texture4 GL_AMD_transform_feedback3_lines_triangles GL_AMD_transform_feedback4 GL_AMD_vertex_shader_layer GL_AMD_vertex_shader_viewport_index GL_ARB_ES2_compatibility GL_ARB_ES3_1_compatibility GL_ARB_ES3_compatibility GL_ARB_arrays_of_arrays GL_ARB_base_instance GL_ARB_bindless_texture GL_ARB_blend_func_extended GL_ARB_buffer_storage GL_ARB_clear_buffer_object GL_ARB_clear_texture GL_ARB_clip_control GL_ARB_color_buffer_float GL_ARB_compatibility GL_ARB_compressed_texture_pixel_storage GL_ARB_compute_shader GL_ARB_conditional_render_inverted GL_ARB_conservative_depth GL_ARB_copy_buffer GL_ARB_copy_image GL_ARB_cull_distance GL_ARB_debug_output GL_ARB_depth_buffer_float GL_ARB_depth_clamp GL_ARB_depth_texture GL_ARB_derivative_control GL_ARB_direct_state_access GL_ARB_draw_buffers GL_ARB_draw_buffers_blend GL_ARB_draw_elements_base_vertex GL_ARB_draw_indirect GL_ARB_draw_instanced GL_ARB_enhanced_layouts GL_ARB_explicit_attrib_location GL_ARB_explicit_uniform_location GL_ARB_fragment_coord_conventions GL_ARB_fragment_layer_viewport GL_ARB_fragment_program GL_ARB_fragment_program_shadow GL_ARB_fragment_shader GL_ARB_framebuffer_no_attachments GL_ARB_framebuffer_object GL_ARB_framebuffer_sRGB GL_ARB_geometry_shader4 GL_ARB_get_program_binary GL_ARB_get_texture_sub_image GL_ARB_gpu_shader5 GL_ARB_gpu_shader_fp64 GL_ARB_half_float_pixel GL_ARB_half_float_vertex GL_ARB_imaging GL_ARB_indirect_parameters GL_ARB_instanced_arrays GL_ARB_internalformat_query GL_ARB_internalformat_query2 GL_ARB_invalidate_subdata GL_ARB_map_buffer_alignment GL_ARB_map_buffer_range GL_ARB_multi_bind GL_ARB_multi_draw_indirect GL_ARB_multisample GL_ARB_multitexture GL_ARB_occlusion_query GL_ARB_occlusion_query2 GL_ARB_pipeline_statistics_query GL_ARB_pixel_buffer_object GL_ARB_point_parameters GL_ARB_point_sprite GL_ARB_program_interface_query GL_ARB_provoking_vertex GL_ARB_query_buffer_object GL_ARB_robust_buffer_access_behavior GL_ARB_sample_shading GL_ARB_sampler_objects GL_ARB_seamless_cube_map GL_ARB_seamless_cubemap_per_texture GL_ARB_separate_shader_objects GL_ARB_shader_atomic_counters GL_ARB_shader_bit_encoding GL_ARB_shader_draw_parameters GL_ARB_shader_group_vote GL_ARB_shader_image_load_store GL_ARB_shader_image_size GL_ARB_shader_objects GL_ARB_shader_precision GL_ARB_shader_stencil_export GL_ARB_shader_storage_buffer_object GL_ARB_shader_subroutine GL_ARB_shader_texture_image_samples GL_ARB_shader_texture_lod GL_ARB_shading_language_100 GL_ARB_shading_language_420pack GL_ARB_shading_language_packing GL_ARB_shadow GL_ARB_shadow_ambient GL_ARB_stencil_texturing GL_ARB_sync GL_ARB_tessellation_shader GL_ARB_texture_barrier GL_ARB_texture_border_clamp GL_ARB_texture_buffer_object GL_ARB_texture_buffer_object_rgb32 GL_ARB_texture_buffer_range GL_ARB_texture_compression GL_ARB_texture_compression_bptc GL_ARB_texture_compression_rgtc GL_ARB_texture_cube_map GL_ARB_texture_cube_map_array GL_ARB_texture_env_add GL_ARB_texture_env_combine GL_ARB_texture_env_crossbar GL_ARB_texture_env_dot3 GL_ARB_texture_float GL_ARB_texture_gather GL_ARB_texture_mirror_clamp_to_edge GL_ARB_texture_mirrored_repeat GL_ARB_texture_multisample GL_ARB_texture_non_power_of_two GL_ARB_texture_query_levels GL_ARB_texture_query_lod GL_ARB_texture_rectangle GL_ARB_texture_rg GL_ARB_texture_rgb10_a2ui GL_ARB_texture_snorm GL_ARB_texture_stencil8 GL_ARB_texture_storage GL_ARB_texture_storage_multisample GL_ARB_texture_swizzle GL_ARB_texture_view GL_ARB_timer_query GL_ARB_transform_feedback2 GL_ARB_transform_feedback3 GL_ARB_transform_feedback_instanced GL_ARB_transform_feedback_overflow_query GL_ARB_transpose_matrix GL_ARB_uniform_buffer_object GL_ARB_vertex_array_bgra GL_ARB_vertex_array_object GL_ARB_vertex_attrib_64bit GL_ARB_vertex_attrib_binding GL_ARB_vertex_buffer_object GL_ARB_vertex_program GL_ARB_vertex_shader GL_ARB_vertex_type_10f_11f_11f_rev GL_ARB_vertex_type_2_10_10_10_rev GL_ARB_viewport_array GL_ARB_window_pos GL_ATI_draw_buffers GL_ATI_envmap_bumpmap GL_ATI_fragment_shader GL_ATI_meminfo GL_ATI_separate_stencil GL_ATI_texture_compression_3dc GL_ATI_texture_env_combine3 GL_ATI_texture_float GL_ATI_texture_mirror_once GL_EXT_abgr GL_EXT_bgra GL_EXT_bindable_uniform GL_EXT_blend_color GL_EXT_blend_equation_separate GL_EXT_blend_func_separate GL_EXT_blend_minmax GL_EXT_blend_subtract GL_EXT_compiled_vertex_array GL_EXT_copy_buffer GL_EXT_copy_texture GL_EXT_depth_bounds_test GL_EXT_direct_state_access GL_EXT_draw_buffers2 GL_EXT_draw_instanced GL_EXT_draw_range_elements GL_EXT_fog_coord GL_EXT_framebuffer_blit GL_EXT_framebuffer_multisample GL_EXT_framebuffer_object GL_EXT_framebuffer_sRGB GL_EXT_geometry_shader4 GL_EXT_gpu_program_parameters GL_EXT_gpu_shader4 GL_EXT_histogram GL_EXT_multi_draw_arrays GL_EXT_packed_depth_stencil GL_EXT_packed_float GL_EXT_packed_pixels GL_EXT_pixel_buffer_object GL_EXT_point_parameters GL_EXT_polygon_offset_clamp GL_EXT_provoking_vertex GL_EXT_rescale_normal GL_EXT_secondary_color GL_EXT_separate_specular_color GL_EXT_shader_image_load_store GL_EXT_shader_integer_mix GL_EXT_shadow_funcs GL_EXT_stencil_wrap GL_EXT_subtexture GL_EXT_texgen_reflection GL_EXT_texture3D GL_EXT_texture_array GL_EXT_texture_buffer_object GL_EXT_texture_compression_bptc GL_EXT_texture_compression_latc GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_cube_map GL_EXT_texture_edge_clamp GL_EXT_texture_env_add GL_EXT_texture_env_combine GL_EXT_texture_env_dot3 GL_EXT_texture_filter_anisotropic GL_EXT_texture_integer GL_EXT_texture_lod GL_EXT_texture_lod_bias GL_EXT_texture_mirror_clamp GL_EXT_texture_object GL_EXT_texture_rectangle GL_EXT_texture_sRGB GL_EXT_texture_sRGB_decode GL_EXT_texture_shared_exponent GL_EXT_texture_snorm GL_EXT_texture_storage GL_EXT_texture_swizzle GL_EXT_timer_query GL_EXT_transform_feedback GL_EXT_vertex_array GL_EXT_vertex_array_bgra GL_EXT_vertex_attrib_64bit GL_IBM_texture_mirrored_repeat GL_INTEL_fragment_shader_ordering GL_KHR_context_flush_control GL_KHR_debug GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KTX_buffer_region GL_NV_blend_square GL_NV_conditional_render GL_NV_copy_depth_to_color GL_NV_copy_image GL_NV_depth_buffer_float GL_NV_explicit_multisample GL_NV_float_buffer GL_NV_half_float GL_NV_primitive_restart GL_NV_texgen_reflection GL_NV_texture_barrier GL_OES_EGL_image GL_SGIS_generate_mipmap GL_SGIS_texture_edge_clamp GL_SGIS_texture_lod GL_SUN_multi_draw_arrays GL_WIN_swap_hint
+13:06:29: Supported GLX extensions: GLX_ARB_create_context GLX_ARB_create_context_profile GLX_ARB_get_proc_address GLX_ARB_multisample GLX_EXT_import_context GLX_EXT_swap_control GLX_EXT_visual_info GLX_EXT_visual_rating GLX_MESA_swap_control GLX_NV_swap_group GLX_OML_swap_method GLX_SGI_make_current_read GLX_SGI_swap_control GLX_SGI_video_sync GLX_SGIS_multisample GLX_SGIX_fbconfig GLX_SGIX_pbuffer GLX_SGIX_swap_barrier GLX_SGIX_swap_group GLX_SGIX_visual_select_group GLX_EXT_texture_from_pixmap GLX_EXT_buffer_age GLX_ARB_context_flush_control 
+13:06:29: ***************************
+13:06:29: *** GL Renderer Started ***
+13:06:29: ***************************
+13:06:29: Registering ResourceManager for type GpuProgram
+13:06:29: GLSL support detected
+13:06:29: GL: Using GL_EXT_framebuffer_object for rendering to textures (best)
+13:06:29: FBO PF_UNKNOWN depth/stencil support: D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_L8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_L16 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A4L4 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_BYTE_LA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_R5G6B5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_B5G6R5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A4R4G4B4 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A1R5G5B5 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_B8G8R8A8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A2R10G10B10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_A2B10G10R10 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT16_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT16_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT32_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT32_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_X8R8G8B8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_X8B8G8R8 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_SHORT_RGBA depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_R3G3B2 depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT16_R depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT32_R depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_SHORT_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT16_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:29: FBO PF_FLOAT32_GR depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:30: FBO PF_SHORT_RGB depth/stencil support: D0S0 D0S1 D0S4 D0S8 D0S16 D16S0 D24S0 D32S0 Packed-D24S8 
+13:06:30: [GL] : Valid FBO targets PF_UNKNOWN PF_L8 PF_L16 PF_A8 PF_A4L4 PF_BYTE_LA PF_R5G6B5 PF_B5G6R5 PF_A4R4G4B4 PF_A1R5G5B5 PF_R8G8B8 PF_B8G8R8 PF_A8R8G8B8 PF_B8G8R8A8 PF_A2R10G10B10 PF_A2B10G10R10 PF_FLOAT16_RGB PF_FLOAT16_RGBA PF_FLOAT32_RGB PF_FLOAT32_RGBA PF_X8R8G8B8 PF_X8B8G8R8 PF_SHORT_RGBA PF_R3G3B2 PF_FLOAT16_R PF_FLOAT32_R PF_SHORT_GR PF_FLOAT16_GR PF_FLOAT32_GR PF_SHORT_RGB 
+13:06:30: RenderSystem capabilities
+13:06:30: -------------------------
+13:06:30: RenderSystem Name: OpenGL Rendering Subsystem
+13:06:30: GPU Vendor: amd
+13:06:30: Device Name: AMD Radeon R9 200 / HD 7900 Series
+13:06:30: Driver Version: 4.5.13416.0
+13:06:30:  * Fixed function pipeline: yes
+13:06:30:  * Hardware generation of mipmaps: no
+13:06:30:  * Texture blending: yes
+13:06:30:  * Anisotropic texture filtering: yes
+13:06:30:  * Dot product texture operation: yes
+13:06:30:  * Cube mapping: yes
+13:06:30:  * Hardware stencil buffer: yes
+13:06:30:    - Stencil depth: 8
+13:06:30:    - Two sided stencil support: yes
+13:06:30:    - Wrap stencil values: yes
+13:06:30:  * Hardware vertex / index buffers: yes
+13:06:30:  * 32-bit index buffers: yes
+13:06:30:  * Vertex programs: yes
+13:06:30:  * Number of floating-point constants for vertex programs: 256
+13:06:30:  * Number of integer constants for vertex programs: 0
+13:06:30:  * Number of boolean constants for vertex programs: 0
+13:06:30:  * Fragment programs: yes
+13:06:30:  * Number of floating-point constants for fragment programs: 256
+13:06:30:  * Number of integer constants for fragment programs: 0
+13:06:30:  * Number of boolean constants for fragment programs: 0
+13:06:30:  * Geometry programs: yes
+13:06:30:  * Number of floating-point constants for geometry programs: 16384
+13:06:30:  * Number of integer constants for geometry programs: 0
+13:06:30:  * Number of boolean constants for geometry programs: 0
+13:06:30:  * Tesselation Hull programs: no
+13:06:30:  * Number of floating-point constants for tesselation hull programs: 46073
+13:06:30:  * Number of integer constants for tesselation hull programs: 40927
+13:06:30:  * Number of boolean constants for tesselation hull programs: 45532
+13:06:30:  * Tesselation Domain programs: no
+13:06:30:  * Number of floating-point constants for tesselation domain programs: 16888
+13:06:30:  * Number of integer constants for tesselation domain programs: 14265
+13:06:30:  * Number of boolean constants for tesselation domain programs: 55320
+13:06:30:  * Compute programs: no
+13:06:30:  * Number of floating-point constants for compute programs: 65217
+13:06:30:  * Number of integer constants for compute programs: 65090
+13:06:30:  * Number of boolean constants for compute programs: 18577
+13:06:30:  * Supported Shader Profiles: arbfp1 arbvp1 glsl glsl100 glsl110 glsl120 gp4gp gpu_gp nvgp4 ps_1_1 ps_1_2 ps_1_3 ps_1_4
+13:06:30:  * Texture Compression: yes
+13:06:30:    - DXT: yes
+13:06:30:    - VTC: no
+13:06:30:    - PVRTC: no
+13:06:30:    - ATC: no
+13:06:30:    - ETC1: no
+13:06:30:    - ETC2: no
+13:06:30:    - BC4/BC5: no
+13:06:30:    - BC6H/BC7: no
+13:06:30:  * Scissor Rectangle: yes
+13:06:30:  * Hardware Occlusion Query: yes
+13:06:30:  * User clip planes: yes
+13:06:30:  * VET_UBYTE4 vertex element type: yes
+13:06:30:  * Infinite far plane projection: yes
+13:06:30:  * Hardware render-to-texture: yes
+13:06:30:  * Floating point textures: yes
+13:06:30:  * Non-power-of-two textures: yes
+13:06:30:  * 1d textures: yes
+13:06:30:  * Volume textures: yes
+13:06:30:  * Multiple Render Targets: 8
+13:06:30:    - With different bit depths: yes
+13:06:30:  * Point Sprites: yes
+13:06:30:  * Extended point parameters: yes
+13:06:30:  * Max Point Size: 8192
+13:06:30:  * Vertex texture fetch: yes
+13:06:30:  * Number of world matrices: 0
+13:06:30:  * Number of texture units: 16
+13:06:30:  * Stencil buffer depth: 8
+13:06:30:  * Number of vertex blend matrices: 0
+13:06:30:    - Max vertex textures: 32
+13:06:30:    - Vertex textures shared: yes
+13:06:30:  * Render to Vertex Buffer : no
+13:06:30:  * Hardware Atomic Counters: no
+13:06:30:  * GL 1.5 without VBO workaround: no
+13:06:30:  * Frame Buffer objects: yes
+13:06:30:  * Frame Buffer objects (ARB extension): no
+13:06:30:  * Frame Buffer objects (ATI extension): no
+13:06:30:  * PBuffer support: yes
+13:06:30:  * GL 1.5 without HW-occlusion workaround: no
+13:06:30:  * Vertex Array Objects: no
+13:06:30:  * Separate shader objects: no
+13:06:30: DefaultWorkQueue('Root') initialising on thread 7f7ccff83840.
+13:06:30: DefaultWorkQueue('Root')::WorkerFunc - thread 7f7cc31aa700 starting.
+13:06:30: DefaultWorkQueue('Root')::WorkerFunc - thread 7f7cc19a7700 starting.
+13:06:30: DefaultWorkQueue('Root')::WorkerFunc - thread 7f7cc29a9700 starting.
+13:06:30: DefaultWorkQueue('Root')::WorkerFunc - thread 7f7cc21a8700 starting.
+13:06:30: Particle Renderer Type 'billboard' registered
+13:06:30: SceneManagerFactory for type 'BspSceneManager' registered.
+13:06:30: Registering ResourceManager for type BspLevel
+13:06:30: SceneManagerFactory for type 'PCZSceneManager' registered.
+13:06:30: MovableObjectFactory for type 'PCZLight' registered.
+13:06:30: MovableObjectFactory for type 'Portal' registered.
+13:06:30: MovableObjectFactory for type 'AntiPortal' registered.
+13:06:30: PCZone Factory Type 'ZoneType_Octree' registered
+13:06:30: SceneManagerFactory for type 'OctreeSceneManager' registered.
+13:06:30: OverlayElementFactory for type Panel registered.
+13:06:30: OverlayElementFactory for type BorderPanel registered.
+13:06:30: OverlayElementFactory for type TextArea registered.
+13:06:30: Registering ResourceManager for type Font
+13:06:30: Parsing scripts for resource group Autodetect
+13:06:30: Finished parsing scripts for resource group Autodetect
+13:06:30: Creating resources for group Autodetect
+13:06:30: All done
+13:06:30: Parsing scripts for resource group Essential
+13:06:30: Parsing script SdkTrays.material
+13:06:30: Parsing script OgreProfiler.material
+13:06:30: Parsing script SdkTrays.fontdef
+13:06:30: Parsing script SdkTrays.overlay
+13:06:30: Texture: sdk_cursor.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_tray.png: Loading 1 faces(PF_A8R8G8B8,64x64x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x64x1.
+13:06:30: Texture: sdk_button_up.png: Loading 1 faces(PF_A8R8G8B8,128x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,128x32x1.
+13:06:30: Texture: sdk_text_box.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_mini_tray.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_track.png: Loading 1 faces(PF_A8R8G8B8,16x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,16x32x1.
+13:06:30: Texture: sdk_handle.png: Loading 1 faces(PF_A8R8G8B8,16x16x1) with 4 generated mipmaps from Image. Internal format is PF_A8R8G8B8,16x16x1.
+13:06:30: Texture: sdk_mini_text_box.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_label.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_separator.png: Loading 1 faces(PF_A8R8G8B8,64x16x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x16x1.
+13:06:30: Texture: sdk_logo.png: Loading 1 faces(PF_A8R8G8B8,128x64x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,128x64x1.
+13:06:30: Texture: sdk_shade.png: Loading 1 faces(PF_A8R8G8B8,64x48x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,64x48x1.
+13:06:30: Texture: sdk_frame.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_mini_text_box_over.png: Loading 1 faces(PF_A8R8G8B8,32x32x1) with 5 generated mipmaps from Image. Internal format is PF_A8R8G8B8,32x32x1.
+13:06:30: Texture: sdk_pulse.png: Loading 1 faces(PF_R8G8B8,8x1x1) with 3 generated mipmaps from Image. Internal format is PF_X8R8G8B8,8x1x1.
+13:06:30: Finished parsing scripts for resource group Essential
+13:06:30: Creating resources for group Essential
+13:06:30: All done
+13:06:30: Parsing scripts for resource group General
+13:06:30: Finished parsing scripts for resource group General
+13:06:30: Creating resources for group General
+13:06:30: All done
+13:06:30: Parsing scripts for resource group Internal
+13:06:30: Finished parsing scripts for resource group Internal
+13:06:30: Creating resources for group Internal
+13:06:30: All done
+13:06:30: Parsing scripts for resource group Popular
+13:06:30: Parsing script Examples.program
+13:06:30: Parsing script Instancing.program
+13:06:30: Parsing script DualQuaternion.program
+13:06:30: Parsing script StdQuad_vp.program
+13:06:30: Parsing script deferred_post.program
+13:06:30: Parsing script ShadowCaster.program
+13:06:30: Parsing script GBuffer.program
+13:06:30: Parsing script triplanarReference.program
+13:06:30: Parsing script Halftone.material
+13:06:30: Parsing script SharpenEdges.material
+13:06:30: Parsing script Ogre.material
+13:06:30: Parsing script MRTtest.material
+13:06:30: Parsing script OldMovie.material
+13:06:30: Parsing script Hurt.material
+13:06:30: Parsing script ShaderSystem.material
+13:06:30: Parsing script DualQuaternion.material
+13:06:30: Parsing script VarianceShadowmap.material
+13:06:30: Parsing script HW_VTFInstancing.material
+13:06:30: Parsing script VTFInstancing.material
+13:06:30: Parsing script Examples-Advanced.material
+13:06:30: Compiler error: object unsupported by render system in Examples-Advanced.material(1027): , Shader name: Examples/TextureArrayPSasm
+13:06:30: Parsing script pssm.material
+13:06:30: Parsing script shadows.material
+13:06:30: Parsing script BlackAndWhite.material
+13:06:30: Parsing script ShaderInstancing.material
+13:06:30: Parsing script OffsetMapping.material
+13:06:30: Parsing script Embossed.material
+13:06:30: Parsing script AdaptivePNTrianglesTessellation.material
+13:06:30: Parsing script RasterizationOrder.material
+13:06:30: Parsing script Glass.material
+13:06:30: Parsing script smoke.material
+13:06:30: Parsing script ASMSwizzle.material
+13:06:30: Parsing script instancing.material
+13:06:30: Parsing script DepthShadowmap.material
+13:06:30: Parsing script Penguin.material
+13:06:30: Parsing script CompositorDemo.material
+13:06:30: Parsing script HWInstancing.material
+13:06:30: Parsing script Examples-Water.material
+13:06:30: Parsing script ASCII.material
+13:06:30: Parsing script Example-Water.material
+13:06:30: Parsing script RZR-002.material
+13:06:30: Parsing script ParticleGS.material
+13:06:30: Parsing script Bloom2.material
+13:06:30: Parsing script Tiling.material
+13:06:30: Parsing script RadialBlur.material
+13:06:30: Parsing script sibenik.material
+13:06:30: Parsing script Examples-DynTex.material
+13:06:30: Parsing script CGSwizzle.material
+13:06:30: Parsing script Laplace.material
+13:06:30: Parsing script Tesselation.material
+13:06:30: Parsing script HW_VTF_LUTInstancing.material
+13:06:30: Parsing script HeatVision.material
+13:06:30: Parsing script Dither.material
+13:06:30: Parsing script InstancingMisc.material
+13:06:30: Parsing script facial.material
+13:06:30: Parsing script DOF.material
+13:06:30: Parsing script Bloom.material
+13:06:30: Parsing script GLSLSwizzle.material
+13:06:30: Parsing script hdr.material
+13:06:30: Parsing script NightVision.material
+13:06:30: Parsing script Examples.material
+13:06:30: Parsing script Ocean.material
+13:06:30: Parsing script MotionBlur.material
+13:06:30: Parsing script IsoSurf.material
+13:06:30: Parsing script Posterize.material
+13:06:30: Parsing script OldTV.material
+13:06:30: Parsing script Invert.material
+13:06:30: Parsing script ssao.material
+13:06:30: Parsing script deferreddemo.material
+13:06:30: Parsing script deferred_post_minilight.material
+13:06:30: Parsing script ShadowCaster.material
+13:06:30: Parsing script deferred_post.material
+13:06:30: Parsing script ROOM.material
+13:06:30: Parsing script HardwareSkinningShadow.material
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_TwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_skinning_2weight_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_TwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in HardwareSkinningShadow.material(169): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in HardwareSkinningShadow.material(170): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in HardwareSkinningShadow.material(171): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_Fragment.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_ps_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in HardwareSkinningShadow.material(169): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in HardwareSkinningShadow.material(170): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in HardwareSkinningShadow.material(171): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_Fragment.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_ps_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource HardwareSkinningShadow_Fragment.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: Parsing script TriplanarTexturing.material
-18:36:04: Compiler error: unknown error in TriplanarTexturing.material(9): token "rtshader_system" is not recognized
-18:36:04: Parsing script RTShaderSystem.material
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(23): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(52): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(110): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(146): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(162): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(110): token "rtshader_system" is not recognized
-18:36:04: Compiler error: unknown error in RTShaderSystem.material(211): token "rtshader_system" is not recognized
-18:36:04: Parsing script DualQuaternionSkinning_Shadow.material
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowOneWeight.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_skinning_1weight_vs_glsl encountered an error during loading and is thus not supported.
+13:06:30: Parsing script TriplanarTexturing.material
+13:06:30: Compiler error: unknown error in TriplanarTexturing.material(9): token "rtshader_system" is not recognized
+13:06:30: Parsing script RTShaderSystem.material
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(23): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(52): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(110): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(146): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(162): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(81): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(110): token "rtshader_system" is not recognized
+13:06:30: Compiler error: unknown error in RTShaderSystem.material(211): token "rtshader_system" is not recognized
+13:06:30: Parsing script DualQuaternionSkinning_Shadow.material
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowOneWeight.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_skinning_1weight_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowOneWeight.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(121): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(122): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(123): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_skinning_2weight_vs_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(121): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(122): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(123): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_skinning_2weight_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(135): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(136): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(137): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowThreeWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_skinning_3weight_vs_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(135): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(136): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(137): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowThreeWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_skinning_3weight_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowThreeWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(149): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(150): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(151): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowFourWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_skinning_4weight_vs_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(149): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(150): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(151): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowFourWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_skinning_4weight_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowFourWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(163): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(164): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(165): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowCasterTwoPhaseTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_skinning_2weight_twophase_vs_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(163): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(164): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(165): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowCasterTwoPhaseTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_skinning_2weight_twophase_vs_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowCasterTwoPhaseTwoWeights.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(374): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(375): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(376): setting of constant failed
-18:36:04: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
-18:36:04: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(377): setting of constant failed
-18:36:04: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowPassThrough_ps.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: High-level program Ogre/RTShader/shadow_caster_dq_ps_glsl encountered an error during loading and is thus not supported.
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(374): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(375): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(376): setting of constant failed
+13:06:30: OGRE EXCEPTION(2:InvalidParametersException): Named constants have not been initialised, perhaps a compile error. in GpuProgramParameters::_findNamedConstantDefinition at /home/sayantan/ogre/OgreMain/src/OgreGpuProgramParams.cpp (line 1709)
+13:06:30: Compiler error: invalid parameters in DualQuaternionSkinning_Shadow.material(377): setting of constant failed
+13:06:30: OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowPassThrough_ps.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
+13:06:30: High-level program Ogre/RTShader/shadow_caster_dq_ps_glsl encountered an error during loading and is thus not supported.
 OGRE EXCEPTION(6:FileNotFoundException): Cannot locate resource DualQuaternionSkinning_ShadowPassThrough_ps.glsl in resource group Popular or any other group. in ResourceGroupManager::openResource at /home/sayantan/ogre/OgreMain/src/OgreResourceGroupManager.cpp (line 756)
-18:36:04: Parsing script HorizonBased.material
-18:36:04: Parsing script ShowNormals.material
-18:36:04: Parsing script Volumetric.material
-18:36:04: Parsing script Crytek.material
-18:36:04: Parsing script SSAOPost.material
-18:36:04: Parsing script GBuffer.material
-18:36:04: Parsing script UnsharpMask.material
-18:36:04: Parsing script ShowViewPos.material
-18:36:04: Parsing script ShowDepth.material
-18:36:04: Parsing script HemisphereMC.material
-18:36:04: Parsing script Modulate.material
-18:36:04: Parsing script CreaseShading.material
-18:36:04: Parsing script triplanarReference.material
-18:36:04: Parsing script RomanBath.material
-18:36:04: Parsing script Sinbad.material
-18:36:04: Parsing script emitted_emitter.particle
-18:36:04: Parsing script Examples-Water.particle
-18:36:04: Parsing script Examples.particle
-18:36:04: Parsing script smoke.particle
-18:36:04: Parsing script Examples.compositor
-18:36:04: Parsing script deferred.compositor
-18:36:04: Parsing script ssao.compositor
-18:36:04: Parsing script SSAOPost.compositor
-18:36:04: Parsing script SSAO.compositor
-18:36:04: Finished parsing scripts for resource group Popular
-18:36:04: Creating resources for group Popular
-18:36:04: All done
-18:36:04: Parsing scripts for resource group Tests
-18:36:04: Parsing script glow.material
-18:36:04: Finished parsing scripts for resource group Tests
-18:36:04: Creating resources for group Tests
-18:36:04: All done
-18:36:04: Mesh: Loading ninja.mesh.
-18:36:04: Skeleton: Loading ninja.skeleton
-18:36:04: Texture: nskingr.jpg: Loading 1 faces(PF_R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,512x512x1.
-18:36:04: Texture: rockwall.tga: Loading 1 faces(PF_R8G8B8,256x256x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,256x256x1.
-18:36:04: *** Initializing OIS ***
-18:36:05: OGRE EXCEPTION(7:InternalErrorException): Cannot load GL vertex program Ogre/ShadowExtrudeDirLightFiniteDebug.  Line 295:
+13:06:30: Parsing script HorizonBased.material
+13:06:30: Parsing script ShowNormals.material
+13:06:30: Parsing script Volumetric.material
+13:06:30: Parsing script Crytek.material
+13:06:30: Parsing script SSAOPost.material
+13:06:30: Parsing script GBuffer.material
+13:06:30: Parsing script UnsharpMask.material
+13:06:30: Parsing script ShowViewPos.material
+13:06:30: Parsing script ShowDepth.material
+13:06:30: Parsing script HemisphereMC.material
+13:06:30: Parsing script Modulate.material
+13:06:30: Parsing script CreaseShading.material
+13:06:30: Parsing script triplanarReference.material
+13:06:30: Parsing script RomanBath.material
+13:06:30: Parsing script Sinbad.material
+13:06:30: Parsing script emitted_emitter.particle
+13:06:30: Parsing script Examples-Water.particle
+13:06:30: Parsing script Examples.particle
+13:06:30: Parsing script smoke.particle
+13:06:30: Parsing script Examples.compositor
+13:06:30: Parsing script deferred.compositor
+13:06:30: Parsing script ssao.compositor
+13:06:30: Parsing script SSAOPost.compositor
+13:06:30: Parsing script SSAO.compositor
+13:06:30: Finished parsing scripts for resource group Popular
+13:06:30: Creating resources for group Popular
+13:06:30: All done
+13:06:30: Parsing scripts for resource group Tests
+13:06:30: Parsing script glow.material
+13:06:30: Finished parsing scripts for resource group Tests
+13:06:30: Creating resources for group Tests
+13:06:30: All done
+13:06:30: Mesh: Loading ninja.mesh.
+13:06:30: Skeleton: Loading ninja.skeleton
+13:06:30: Texture: nskingr.jpg: Loading 1 faces(PF_R8G8B8,512x512x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,512x512x1.
+13:06:30: Texture: rockwall.tga: Loading 1 faces(PF_R8G8B8,256x256x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,256x256x1.
+13:06:30: *** Initializing OIS ***
+13:06:30: OGRE EXCEPTION(7:InternalErrorException): Cannot load GL vertex program Ogre/ShadowExtrudeDirLightFiniteDebug.  Line 295:
 line 12: undefined variable in Ogre/ShadowExtrudeDirLightFiniteDebug at /home/sayantan/ogre/RenderSystems/GL/src/OgreGLGpuProgram.cpp (line 251)
-18:36:05: Gpu program Ogre/ShadowExtrudeDirLightFiniteDebug encountered an error during loading and is thus not supported.
-18:36:05: Texture: spot_shadow_fade.png: Loading 1 faces(PF_R8G8B8,128x128x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,128x128x1.
-18:36:05: Font SdkTrays/Caption using texture size 512x256
-18:36:05: Info: Freetype returned null for character 160 in font SdkTrays/Caption
-18:36:05: Texture: SdkTrays/CaptionTexture: Loading 1 faces(PF_BYTE_LA,512x256x1) with 0 generated mipmaps from Image. Internal format is PF_BYTE_LA,512x256x1.
-18:36:05: Font SdkTrays/Value using texture size 512x256
-18:36:05: Info: Freetype returned null for character 127 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 128 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 129 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 130 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 131 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 132 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 133 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 134 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 135 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 136 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 137 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 138 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 139 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 140 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 141 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 142 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 143 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 144 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 145 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 146 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 147 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 148 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 149 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 150 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 151 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 152 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 153 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 154 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 155 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 156 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 157 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 158 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 159 in font SdkTrays/Value
-18:36:05: Info: Freetype returned null for character 160 in font SdkTrays/Value
-18:36:05: Texture: SdkTrays/ValueTexture: Loading 1 faces(PF_BYTE_LA,512x256x1) with 0 generated mipmaps from Image. Internal format is PF_BYTE_LA,512x256x1.
+13:06:30: Gpu program Ogre/ShadowExtrudeDirLightFiniteDebug encountered an error during loading and is thus not supported.
+13:06:30: Texture: spot_shadow_fade.png: Loading 1 faces(PF_R8G8B8,128x128x1) with 5 generated mipmaps from Image. Internal format is PF_X8R8G8B8,128x128x1.
+13:06:30: Font SdkTrays/Caption using texture size 512x256
+13:06:30: Info: Freetype returned null for character 160 in font SdkTrays/Caption
+13:06:30: Texture: SdkTrays/CaptionTexture: Loading 1 faces(PF_BYTE_LA,512x256x1) with 0 generated mipmaps from Image. Internal format is PF_BYTE_LA,512x256x1.
+13:06:30: Font SdkTrays/Value using texture size 512x256
+13:06:30: Info: Freetype returned null for character 127 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 128 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 129 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 130 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 131 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 132 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 133 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 134 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 135 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 136 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 137 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 138 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 139 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 140 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 141 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 142 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 143 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 144 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 145 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 146 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 147 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 148 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 149 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 150 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 151 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 152 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 153 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 154 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 155 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 156 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 157 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 158 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 159 in font SdkTrays/Value
+13:06:30: Info: Freetype returned null for character 160 in font SdkTrays/Value
+13:06:30: Texture: SdkTrays/ValueTexture: Loading 1 faces(PF_BYTE_LA,512x256x1) with 0 generated mipmaps from Image. Internal format is PF_BYTE_LA,512x256x1.
