@@ -4,6 +4,9 @@
 #include "BaseApplication.h"
 #include "RigidBody.h"
 #include "Contact.h"
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 #include <btBulletDynamicsCommon.h>
 
 //---------------------------------------------------------------------------
@@ -58,6 +61,16 @@ private:
     void addGround(void);
     void addLight(void);
     void addOverlay(void);
+
+    Ogre::Timer timer;
+    unsigned long time;
+    void screenCaptureDataProcess();
+    std::thread t_screenCapture;
+    std::mutex m;
+    std::condition_variable cv;
+    void screenCaptureDataGenerate();
+
+    std::queue<Ogre::PixelBox> imageBuffer;
 };
 
 //---------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 #include "RigidBodySystem.h"
 #include <iostream>
+#include <chrono>
+
 
 void RigidBodySystem::addNinja() {
 	if (!collisionWorld) {
@@ -98,6 +100,39 @@ void RigidBodySystem::createScene(void)
   	lineObject->position(0, 0, 0);
    	lineObject->end();
     lineNode->attachObject(lineObject);
+
+    timer = Ogre::Timer();
+    time = timer.getMilliseconds();
+
+    t_screenCapture = std::thread(&RigidBodySystem::screenCaptureDataProcess, this);
+}
+
+void RigidBodySystem::screenCaptureDataGenerate() {
+	 int left, top, width, height;
+	 Ogre::Viewport *vp = mWindow->getViewport(0);
+	 vp->getActualDimensions(left, top, width, height);
+
+	Ogre::PixelFormat format = Ogre::PF_BYTE_RGBA;
+	unsigned int bytesPerPixel = Ogre::PixelUtil::getNumElemBytes(format);
+
+	unsigned char *data = new unsigned char [width * height * bytesPerPixel];
+	Ogre::Box extents(left, top, left + width, top + height);
+	Ogre::PixelBox pb(extents, format, data);
+
+	//printf("PixelBox: %d, %d, w: %d, h: %d\n", pb.left, pb.right, pb.getWidth(), pb.getHeight());
+
+	mWindow->copyContentsToMemory(pb);
+
+	{
+		//Hold mutex
+		std::lock_guard<std::mutex> lk(m);
+		//Process critical data
+		imageBuffer.push(pb);
+	} // Mutex released when lk is destroyed
+
+	// Notify the other thread that the critical data is modified and recheck the condition if it is waiting.
+	cv.notify_one();
+
 }
 
 void RigidBodySystem::animate() {
@@ -163,6 +198,39 @@ void RigidBodySystem::animate() {
 	for (size_t i = 0; i < bodies.size(); i++)
 		bodies[i].advanceTime(dt);
 
+	if ((timer.getMilliseconds() - time) > 33) {
+		time = timer.getMilliseconds();
+		screenCaptureDataGenerate();
+	}
+}
+
+// Runs on a separate thread
+void RigidBodySystem::screenCaptureDataProcess() {
+	static long int sequence = 0;
+	for (;;) {
+		// Hold mutex
+		std::unique_lock<std::mutex> lk(m);
+
+		/* wait if condition is not satisfied and release mutex while waiting.
+		 * Recheck the condition if notified by main thread.
+		 */
+		cv.wait(lk,  [this](){return imageBuffer.size() > 0;});
+		// mutex is re acquired when wait returns.
+
+		// Process critical data
+		Ogre::PixelBox pb = imageBuffer.front();
+		imageBuffer.pop();
+		lk.unlock(); // Release mutex
+
+		Ogre::Image finalImage;
+		finalImage = finalImage.loadDynamicImage(static_cast<unsigned char*>(pb.data), pb.getWidth(), pb.getHeight(), pb.format);
+		std::string s = "Stills/" + std::to_string(sequence++) + ".bmp";
+		finalImage.save(s);
+
+		delete []static_cast<unsigned char*>(pb.data);
+
+		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	}
 }
 
 void RigidBodySystem::mousePressedRigidBody(OIS::MouseButtonID id) {

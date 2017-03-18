@@ -92,7 +92,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 	node = sceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::SceneNode *n = node->createChildSceneNode(Ogre::Vector3(-cm.x, -cm.y, -cm.z));
 	n->attachObject(entity);
-	n->showBoundingBox(true);
+	//n->showBoundingBox(true);
 
 	this->constrained = constrained;
 	this->index = index;
