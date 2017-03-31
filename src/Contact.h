@@ -14,6 +14,7 @@
 #define isZero(value, threshold) \
         (value >= -threshold && value <= threshold)
 
+#ifdef USE_FULL_JACOBIAN
 struct ContactJacobian {
 	/* Normal Constraints*/
 	glm::dvec3 linN, angN; // Normal constraints
@@ -42,6 +43,8 @@ public:
 	double lambda1;
 	double lambda2;
 	double lambda3;
+
+	bool processed;
 
 	Contact(RigidBody *A, RigidBody *B, const glm::dvec3 &contactPoint, const glm::dvec3 &contactNormal, double bounce, double dt) {
 		A->deltaV = glm::dvec3(0,0,0); A->deltaW = glm::dvec3(0,0,0);
@@ -191,8 +194,164 @@ public:
 	    	lambda1 = lambda_final1;
 	    	lambda2 = lambda_final2;
 	    	lambda3 = lambda_final3;
+
+	    	processed = true;
 	}
 
 };
+#else
+struct ContactJacobian {
+	/* Normal Constraints*/
+	glm::dvec3 linN_scaledD, angN_scaledD; // Normal constraints scaled by D_row1_inv
+	glm::dvec3 linN_scaledM, angN_scaledM; // Normal constraints scaled by inverse mass and inverse inertia
+
+	glm::dvec3 linT1_scaledD, angT1_scaledD;
+	glm::dvec3 linT1_scaledM, angT1_scaledM;
+};
+
+class Contact {
+	RigidBody *A;
+	RigidBody *B;
+public:
+	ContactJacobian jA;
+	ContactJacobian jB;
+	double b_row1_scaledD;
+	double b_row2_scaledD;
+
+	double lambda1;
+	double lambda2;
+
+	bool processed;
+
+	Contact(RigidBody *A, RigidBody *B, const glm::dvec3 &contactPoint, const glm::dvec3 &contactNormal, double bounce, double dt) {
+		A->deltaV = glm::dvec3(0,0,0); A->deltaW = glm::dvec3(0,0,0);
+		B->deltaV = glm::dvec3(0,0,0); B->deltaW = glm::dvec3(0,0,0);
+
+		lambda1 = lambda2 = 0;
+
+		glm::dvec3 linConstA, linConstB; //linear constraint
+		glm::dvec3 angConstA, angConstB; //angular constraint
+
+
+		this->A = A;
+		this->B = B;
+
+		glm::dvec3 linImpA = A->getLinearImpulse(dt); glm::dvec3 angImpA = A->getAngularImpulse(dt);
+		glm::dvec3 linImpB = B->getLinearImpulse(dt); glm::dvec3 angImpB = B->getAngularImpulse(dt);
+
+		/* compute constraints for Normal direction*/
+		linConstA = -contactNormal; angConstA = -(A->getRcrossN(contactPoint, contactNormal));
+		linConstB = contactNormal; angConstB = B->getRcrossN(contactPoint, contactNormal);
+
+		jA.linN_scaledM = A->getScaledByMinv(linConstA); jA.angN_scaledM = A->getScaledByIinv(angConstA);
+		jB.linN_scaledM = B->getScaledByMinv(linConstB); jB.angN_scaledM = B->getScaledByIinv(angConstB);
+
+		double D_row1_inv = glm::dot(linConstA, jA.linN_scaledM) + glm::dot(angConstA, jA.angN_scaledM) +
+				glm::dot(linConstB, jB.linN_scaledM) + glm::dot(angConstB, jB.angN_scaledM);
+
+		if (isZero(D_row1_inv, 1e-6)) {
+			std::cerr<<"1:Two Constrained objects colliding..."<<std::endl;
+			exit(0);
+		}
+
+		D_row1_inv = 1.0 / D_row1_inv;
+
+		jA.linN_scaledD = linConstA * D_row1_inv; jA.angN_scaledD = angConstA * D_row1_inv;
+		jB.linN_scaledD = linConstB * D_row1_inv; jB.angN_scaledD = angConstB * D_row1_inv;
+
+		b_row1_scaledD = glm::dot(linConstA, linImpA) + glm::dot(angConstA, angImpA) +
+				glm::dot(linConstB, linImpB) + glm::dot(angConstB, angImpB) +
+		/*bounce*/ bounce * (A->getDotWithV(linConstA) + A->getDotWithW(angConstA) + B->getDotWithV(linConstB) + B->getDotWithW(angConstB));
+
+		b_row1_scaledD *= D_row1_inv;
+
+
+
+
+		/* Compute constraints for tangential direction 1*/
+		glm::dvec3 tangent1(std::rand(), std::rand(), std::rand());
+		glm::normalize(tangent1);
+		if (isnZero(glm::dot(tangent1, contactNormal), 1e-4)) {
+			tangent1 = glm::cross(contactNormal, tangent1);
+			glm::normalize(tangent1);
+		}
+		else {
+			if (isnZero(contactNormal.x, 1e-3))
+				tangent1 = glm::dvec3(-contactNormal.y-contactNormal.z, contactNormal.x, contactNormal.x);
+			else if (isnZero(contactNormal.y, 1e-6))
+				tangent1 = glm::dvec3(contactNormal.y, -contactNormal.z - contactNormal.x, contactNormal.y);
+			else if (isnZero(contactNormal.z, 1e-16))
+				tangent1 = glm::dvec3(contactNormal.z, contactNormal.z, - contactNormal.x - contactNormal.y);
+			else {
+				std::cerr<<"Contact Normal is zero."<<std::endl;
+				exit(0);
+			}
+			glm::normalize(tangent1);
+		}
+
+		linConstA = -tangent1; angConstA = -(A->getRcrossN(contactPoint, tangent1));
+		linConstB = tangent1; angConstB = (B->getRcrossN(contactPoint, tangent1));
+
+		jA.linT1_scaledM = A->getScaledByMinv(linConstA); jA.angT1_scaledM = A->getScaledByIinv(angConstA);
+		jB.linT1_scaledM = B->getScaledByMinv(linConstB); jB.angT1_scaledM = B->getScaledByIinv(angConstB);
+
+		double D_row2_inv = glm::dot(linConstA, jA.linT1_scaledM) + glm::dot(angConstA, jA.angT1_scaledM) +
+						glm::dot(linConstB, jB.linT1_scaledM) + glm::dot(angConstB, jB.angT1_scaledM);
+
+		if (isZero(D_row2_inv, 1e-6)) {
+			std::cerr<<"2:Two Constrained objects colliding..."<<std::endl;
+			exit(0);
+		}
+
+		D_row2_inv = 1.0 / D_row2_inv;
+
+		jA.linT1_scaledD = linConstA * D_row2_inv; jA.angT1_scaledD = angConstA * D_row2_inv;
+		jB.linT1_scaledD = linConstB * D_row2_inv; jB.angT1_scaledD = angConstB * D_row2_inv;
+
+		b_row2_scaledD = glm::dot(linConstA, linImpA) + glm::dot(angConstA, angImpA) +
+						glm::dot(linConstB, linImpB) + glm::dot(angConstB, angImpB);
+
+		b_row2_scaledD *= D_row2_inv;
+
+		/* Compute constraints for tangential direction 2*/
+		// Just randomize the first tangent direction so that tangent forces act from different direction when new contacts are formed.
+		// When averaged over multiple time-steps, tangent forces should span the entire surface plane eliminating the need for second
+		// tangent.
+	}
+
+	void processContact(double mu) {
+
+	    	double lambda_final1 = lambda1 - b_row1_scaledD - glm::dot(jA.linN_scaledD, A->deltaV)
+	    		- glm::dot(jA.angN_scaledD, A->deltaW) - glm::dot(jB.linN_scaledD, B->deltaV)
+    			- glm::dot(jB.angN_scaledD, B->deltaW);
+
+	    	if (lambda_final1 < 0) lambda_final1 = 0;
+
+	    	double lambda_final2 = lambda2 - b_row2_scaledD - glm::dot(jA.linT1_scaledD, A->deltaV)
+    			- glm::dot(jA.angT1_scaledD, A->deltaW) - glm::dot(jB.linT1_scaledD, B->deltaV)
+	    		- glm::dot(jB.angT1_scaledD, B->deltaW);
+
+	    	double max_tangent1 = mu * lambda_final1;
+	    	if (lambda_final2 < - max_tangent1) lambda_final2 = - max_tangent1;
+	    	else if (lambda_final2 > max_tangent1) lambda_final2 = max_tangent1;
+
+	    	double delta_lambda1 = lambda_final1 - lambda1;
+	    	double delta_lambda2 = lambda_final2 - lambda2;
+
+	    	A->deltaV += jA.linN_scaledM * delta_lambda1 + jA.linT1_scaledM * delta_lambda2;
+	    	A->deltaW += jA.angN_scaledM * delta_lambda1 + jA.angT1_scaledM * delta_lambda2;
+
+
+			B->deltaV += jB.linN_scaledM * delta_lambda1 + jB.linT1_scaledM * delta_lambda2;
+	    	B->deltaW += jB.angN_scaledM * delta_lambda1 + jB.angT1_scaledM * delta_lambda2;
+
+	    	lambda1 = lambda_final1;
+	    	lambda2 = lambda_final2;
+
+	    	processed = true;
+	}
+
+};
+#endif
 
 #endif

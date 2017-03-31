@@ -9,7 +9,7 @@ static void getMeshInformation(Ogre::Mesh* mesh,
                         const Ogre::Quaternion &orient,
                         const Ogre::Vector3 &scale);
 
-RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneManager *sceneMgr, double massScale, glm::dvec3 initPos, btCollisionWorld *cW, bool constrained) {
+RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, bool showEntity, bool showBBox, Ogre::SceneManager *sceneMgr, const glm::dvec3 &scale, double linMassScale, double angMassScale, glm::dvec3 initPos, btCollisionWorld *cW, bool constrained) {
 	Ogre::Vector3* vertices;
 
 	getMeshInformation((entity->getMesh()).get(), vertex_count, vertices, index_count, indices, Ogre::Vector3(0, 0, 0), Ogre::Quaternion::IDENTITY, Ogre::Vector3(1,1,1));
@@ -27,7 +27,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 		Ogre::Vector3 v3 = vertices[t3];
 
 		Ogre::Vector3 centroid((v1+v2+v3)/3.0);
-		double area = 0.5 * ((v1 - v2).crossProduct(v1 - v3)).length() * massScale;
+		double area = 0.5 * ((v1 - v2).crossProduct(v1 - v3)).length() * linMassScale;
 		area = area > 0 ? area: -area;
 		mass += area;
 		cm += glm::dvec3(area * centroid.x, area * centroid.y, area * centroid.z);
@@ -42,7 +42,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 	this->vertices = new glm::dvec3[vertex_count];
 
 	for (size_t i = 0; i < vertex_count; i++) {
-		this->vertices[i] = glm::dvec3(vertices[i].x - cm.x, vertices[i].y - cm.y, vertices[i].z - cm.z);
+		this->vertices[i] = glm::dvec3(vertices[i].x - cm.x, vertices[i].y - cm.y, vertices[i].z - cm.z) * scale;
 	}
 
 	double Ixx = 0;
@@ -62,7 +62,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 
 		glm::dvec3 centroid((v1+v2+v3)/3.0);
 
-		double area = 0.5 * glm::cross((v1 - v2),(v1 - v3)).length() * massScale * 10;
+		double area = 0.5 * glm::cross((v1 - v2),(v1 - v3)).length() * angMassScale * 10;
 		area = area > 0 ? area: -area;
 
 		Ixx += area * (centroid.z * centroid.z + centroid.y * centroid.y);
@@ -91,8 +91,11 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, Ogre::SceneM
 
 	node = sceneMgr->getRootSceneNode()->createChildSceneNode();
 	Ogre::SceneNode *n = node->createChildSceneNode(Ogre::Vector3(-cm.x, -cm.y, -cm.z));
-	n->attachObject(entity);
-	//n->showBoundingBox(true);
+	node->scale(scale.x, scale.y, scale.z);
+	if (showEntity) {
+		n->attachObject(entity);
+		n->showBoundingBox(showBBox);
+	}
 
 	this->constrained = constrained;
 	this->index = index;

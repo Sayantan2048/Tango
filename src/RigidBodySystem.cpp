@@ -1,7 +1,9 @@
 #include "RigidBodySystem.h"
 #include <iostream>
 #include <chrono>
-
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
 
 void RigidBodySystem::addNinja() {
 	if (!collisionWorld) {
@@ -10,7 +12,30 @@ void RigidBodySystem::addNinja() {
 	}
 	Ogre::Entity *entity = mSceneMgr->createEntity("ninja.mesh");
 	entity->setCastShadows(true);
-	bodies.push_back(RigidBody(bodies.size(), entity, mSceneMgr, 1.0/300.0, glm::dvec3(0,50,0), collisionWorld, false));
+	try {
+		bodies.push_back(RigidBody(bodies.size(), entity, true, showBoundingBox, mSceneMgr, glm::dvec3(1.5, 1.5, 1.5), 1.0/30.0, 1.0/600, glm::dvec3(0,500,0), collisionWorld, false));
+	} catch(std::bad_alloc &xa) {
+		std::cerr<<"Couldn't Reallocate RigidBody stack"<<std::endl;
+		exit(0);
+	}
+	pickBody[entity] = bodies.size() - 1;
+}
+
+void RigidBodySystem::addCube() {
+	if (!collisionWorld) {
+		std::cout<<"Cannot add Cube...Init physics first."<<std::endl;
+		return;
+	}
+
+	Ogre::Entity* entity = mSceneMgr->createEntity("ColourCube");
+	entity->setMaterialName("Test/ColourTest");
+	entity->setCastShadows(true);
+	try {
+		bodies.push_back(RigidBody(bodies.size(), entity, true, showBoundingBox, mSceneMgr, glm::dvec3(30.0), 20.0, 1.0, glm::dvec3(0, 500, 0), collisionWorld, false));
+	} catch(std::bad_alloc &xa) {
+		std::cerr<<"Couldn't Reallocate RigidBody stack"<<std::endl;
+		exit(0);
+	}
 	pickBody[entity] = bodies.size() - 1;
 }
 
@@ -25,14 +50,25 @@ void RigidBodySystem::addGround() {
 		  "ground",
 	Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 		  plane,
-		  1500, 1500, 20, 20,
+		  2000, 2000, 1, 1,
 		  true,
 		  1, 5, 5,
 	Ogre::Vector3::UNIT_Z);
-	Ogre::Entity* groundEntity = mSceneMgr->createEntity("ground");
-	groundEntity->setMaterialName("Examples/Rockwall");
-	bodies.push_back(RigidBody(bodies.size(), groundEntity, mSceneMgr, 1.0/300.0, glm::dvec3(0,0,0), collisionWorld, true));
-	pickBody[groundEntity] = bodies.size() - 1;
+	Ogre::Entity* animEntity = mSceneMgr->createEntity("ground");
+	animEntity->setMaterialName("Examples/Rockwall");
+
+	mSceneMgr->getRootSceneNode()->createChildSceneNode(Ogre::Vector3(0, 1.0, 0))->attachObject(animEntity);
+
+	/* For physics use a simpler 3D cuboid as ground*/
+	Ogre::Entity* phyEntity = mSceneMgr->createEntity("ColourCube");
+	phyEntity->setMaterialName("Test/ColourTest");
+	try {
+		bodies.push_back(RigidBody(bodies.size(), phyEntity, false, showBoundingBox, mSceneMgr, glm::dvec3(2000.0, 1.0, 2000.0), 1.0/300.0, 1.0/300.0, glm::dvec3(0), collisionWorld, true));
+	} catch(std::bad_alloc &xa) {
+		std::cerr<<"Couldn't Reallocate RigidBody stack"<<std::endl;
+		exit(0);
+	}
+	pickBody[phyEntity] = bodies.size() - 1;
 }
 
 void RigidBodySystem::physicsInit(){
@@ -73,15 +109,14 @@ void RigidBodySystem::addOverlay() {
 void RigidBodySystem::createScene(void)
 {
 	physicsInit();
-
+	bodies.reserve(10);
 	// Create your scene here :)
-	addNinja();
+	addCube();
 	addGround();
 
 	addLight();
 
 	addOverlay();
-
 
     lineObject =  mSceneMgr->createManualObject("line");
     // NOTE: The second parameter to the create method is the resource group the material will be added to.
@@ -104,7 +139,8 @@ void RigidBodySystem::createScene(void)
     timer = Ogre::Timer();
     time = timer.getMilliseconds();
 
-    t_screenCapture = std::thread(&RigidBodySystem::screenCaptureDataProcess, this);
+    if (captureFrames)
+    	t_screenCapture = std::thread(&RigidBodySystem::screenCaptureDataProcess, this);
 }
 
 void RigidBodySystem::screenCaptureDataGenerate() {
@@ -137,7 +173,7 @@ void RigidBodySystem::screenCaptureDataGenerate() {
 
 void RigidBodySystem::animate() {
 	double dt = 0.05;
-	double bounce = 0.2;
+	double bounce = 0.0;
 	double mu = 0.33;
 
 	if (mouseButtonDown) {
@@ -154,7 +190,7 @@ void RigidBodySystem::animate() {
 				bodies[i].getContactVelocity(glm::dvec3(startWorld))));
 	}
 	for (size_t i = 0; i < bodies.size(); i++)
-		bodies[i].applyForce(glm::dvec3(0, -1, 0));
+		bodies[i].applyForce(glm::dvec3(0, -10, 0));
 
 	collisionWorld->performDiscreteCollisionDetection();
 
@@ -164,8 +200,14 @@ void RigidBodySystem::animate() {
 	for (int i = 0; i < numManifolds; i++)
 		numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
 
-	if (numContacts > contacts.size())
-		contacts.reserve(numContacts * 2);
+	if (numContacts > contacts.size()) {
+		try {
+			contacts.reserve(numContacts * 2);
+		} catch(std::bad_alloc &xa) {
+			std::cerr<<"Couldn't Reallocate Contact stack"<<std::endl;
+			exit(0);
+		}
+	}
 
 	numContacts = 0;
 	for (int i = 0; i < numManifolds; i++) {
@@ -186,9 +228,39 @@ void RigidBodySystem::animate() {
 	    }
 	}
 
-	for (int j = 0; j < 50 && numContacts; j++) {
+	unsigned int contactPow2 = numContacts;
+	contactPow2--;
+	contactPow2 |= contactPow2 >> 1;
+	contactPow2 |= contactPow2 >> 2;
+	contactPow2 |= contactPow2 >> 4;
+	contactPow2 |= contactPow2 >> 8;
+	contactPow2 |= contactPow2 >> 16;
+
+	srand(std::time(NULL));
+	for (int j = 0; j < 100 && numContacts; j++) {
+
 		for (unsigned int i = 0; i < numContacts; i++)
-			contacts[i].processContact(mu);
+			contacts[i].processed = false;
+
+		for (unsigned int i = 0; i < (numContacts>>1); i++) {
+			unsigned int randNum = std::rand() & contactPow2;
+			if (randNum >= numContacts) randNum >>= 2;
+			if (!contacts[randNum].processed)
+				contacts[randNum].processContact(mu);
+		}
+
+		for (unsigned int i = 0; i < numContacts; i++) {
+			if (!contacts[i].processed)
+				contacts[i].processContact(mu);
+		}
+
+		/*bool check = true;
+		for (unsigned int i = 0; i < numContacts; i++)
+			check &= contacts[i].processed;
+
+		if (!check)
+			std::cout<<"BACHAO"<<std::endl;*/
+
 	}
 
 	for (size_t i = 0; i < bodies.size() && numContacts; i++)
@@ -198,10 +270,18 @@ void RigidBodySystem::animate() {
 	for (size_t i = 0; i < bodies.size(); i++)
 		bodies[i].advanceTime(dt);
 
-	if ((timer.getMilliseconds() - time) > 33) {
+	if (captureFrames && (timer.getMilliseconds() - time) > 33) {
 		time = timer.getMilliseconds();
 		screenCaptureDataGenerate();
 	}
+}
+
+inline std::string pad(int n, int len) {
+    std::string result(len--, '0');
+    for (int val=(n<0)?-n:n; len>=0&&val!=0; --len,val/=10)
+       result[len]='0'+val%10;
+    if (len>=0&&n<0) result[0]='-';
+    return result;
 }
 
 // Runs on a separate thread
@@ -211,7 +291,8 @@ void RigidBodySystem::screenCaptureDataProcess() {
 		// Hold mutex
 		std::unique_lock<std::mutex> lk(m);
 
-		/* wait if condition is not satisfied and release mutex while waiting.
+		/*
+		 * wait if condition is not satisfied and release mutex while waiting.
 		 * Recheck the condition if notified by main thread.
 		 */
 		cv.wait(lk,  [this](){return imageBuffer.size() > 0;});
@@ -224,18 +305,16 @@ void RigidBodySystem::screenCaptureDataProcess() {
 
 		Ogre::Image finalImage;
 		finalImage = finalImage.loadDynamicImage(static_cast<unsigned char*>(pb.data), pb.getWidth(), pb.getHeight(), pb.format);
-		std::string s = "Stills/" + std::to_string(sequence++) + ".bmp";
+		std::string s = "Stills/img" + pad(sequence++, 10) + ".jpg"; // jpg small size and low processing time.
 		finalImage.save(s);
 
 		delete []static_cast<unsigned char*>(pb.data);
-
-		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 }
 
 void RigidBodySystem::mousePressedRigidBody(OIS::MouseButtonID id) {
 	if (id == OIS::MB_Right) {
-		addNinja();
+		addCube();
 	}
 	else {
 		//Object Picking

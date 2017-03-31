@@ -91,9 +91,9 @@ public:
 	glm::dvec4 getBodyToWorld(glm::dvec4 body);
 	glm::dvec3 getContactVelocity(glm::dvec3 contactPoint);
 
-	RigidBody(unsigned long int index, Ogre::Entity *entity,
-			Ogre::SceneManager *sceneMgr, double massScale,
-			 glm::dvec3 initPos, btCollisionWorld *cW, bool constrained);
+	RigidBody(unsigned long int index, Ogre::Entity *entity, bool showEntity, bool showBBox,
+			Ogre::SceneManager *sceneMgr, const glm::dvec3 &scale, double linMassScale,
+			double angMassScale, glm::dvec3 initPos, btCollisionWorld *cW, bool constrained);
 
 	RigidBody(const RigidBody &obj) {
 		memcpy(this, &obj, sizeof(obj));

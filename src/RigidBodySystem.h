@@ -32,7 +32,7 @@ private:
 	std::map<Ogre::Entity*, unsigned long> pickBody;
 	Ogre::ManualObject* lineObject; //Draw the force line when an object is dragged
 	glm::dvec3 getSpringForce(glm::dvec3 startPoint, glm::dvec3 endPoint, glm::dvec3 vel) {
-		double k = 0.01;
+		double k = 0.1;
 		double c = 0.001;
 
 		glm::dvec3 dx = endPoint - startPoint;
@@ -44,6 +44,7 @@ private:
 	}
 
 	void physicsInit(void);
+
 	btBroadphaseInterface* broadphase;
 	btDefaultCollisionConfiguration* collisionConfiguration;
 	btCollisionDispatcher* dispatcher;
@@ -59,8 +60,13 @@ protected:
 private:
     void addNinja(void);
     void addGround(void);
+    void addCube();
     void addLight(void);
     void addOverlay(void);
+
+    static bool showBoundingBox;
+
+    static bool captureFrames;
 
     Ogre::Timer timer;
     unsigned long time;
@@ -69,10 +75,11 @@ private:
     std::mutex m;
     std::condition_variable cv;
     void screenCaptureDataGenerate();
-
     std::queue<Ogre::PixelBox> imageBuffer;
 };
 
+bool RigidBodySystem::captureFrames = false;
+bool RigidBodySystem::showBoundingBox = false;
 //---------------------------------------------------------------------------
 
 #endif // #ifndef __TutorialApplication_h_

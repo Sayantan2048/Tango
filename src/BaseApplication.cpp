@@ -17,6 +17,8 @@ http://www.ogre3d.org/wiki/
 
 #include "BaseApplication.h"
 
+#include "MeshObjects.h"
+
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include <macUtils.h>
 #endif
@@ -221,6 +223,7 @@ void BaseApplication::createResourceListener(void)
 void BaseApplication::loadResources(void)
 {
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    MeshObjects::cubeObject();
 }
 //---------------------------------------------------------------------------
 void BaseApplication::go(void)
