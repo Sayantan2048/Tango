@@ -86,6 +86,7 @@ RigidBody::RigidBody(unsigned long int index, Ogre::Entity *entity, bool showEnt
 
 	deltaV = glm::dvec3(0,0,0);
 	deltaW = glm::dvec3(0,0,0);
+	numContacts = 0;
 
 	delete[] vertices;
 

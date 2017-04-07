@@ -71,6 +71,7 @@ public:
 	/* For contact processing */
 	glm::dvec3 deltaV; // delta linear velocity
 	glm::dvec3 deltaW; // delta angular velocity
+	unsigned int numContacts;
 
 	void advanceTime(double dt);
 	void applyForce(glm::dvec3 contact, glm::dvec3 force);
@@ -85,7 +86,10 @@ public:
 	inline glm::dvec3 getAngularImpulse(double dt) const {return w + (constrained ? glm::dvec3(0,0,0) : iiT * ((t - glm::cross(w, iT * w)) * dt));}
 	inline double getDotWithV(const glm::dvec3 &vec) const { return glm::dot(v, vec);}
 	inline double getDotWithW(const glm::dvec3 &vec) const { return glm::dot(w, vec);}
-	inline void updateVelocity() { v += deltaV; w += deltaW; deltaV = glm::dvec3(0,0,0); deltaW = glm::dvec3(0,0,0);}
+	inline void updateVelocity() { //std::cout<<deltaV.x<<" "<<deltaV.y<<" "<<deltaV.z<<" "<<deltaW.x<<" "<<deltaW.y<<" "<<deltaW.z<<std::endl;
+		v += deltaV; w += deltaW; deltaV = glm::dvec3(0,0,0); deltaW = glm::dvec3(0,0,0); numContacts = 0;}
+	inline void updateVelocity(const glm::dvec3 &deltaLin, const glm::dvec3 &deltaAng) {
+			v += deltaLin; w += deltaAng; numContacts = 0;}
 
 	glm::dvec4 getWorldToBody(glm::dvec4 world);
 	glm::dvec4 getBodyToWorld(glm::dvec4 body);
