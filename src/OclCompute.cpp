@@ -218,6 +218,9 @@ void OclCompute::_2_initKernels() {
 				kernelList.push_back(clCreateKernel(program, "jacobi_v2", &err));
 				HANDLE_CLERROR(err, "Failed to build kernel.");
 
+				kernelList.push_back(clCreateKernel(program, "jacobi_v3", &err));
+				HANDLE_CLERROR(err, "Failed to build kernel.");
+
 				HANDLE_CLERROR(clReleaseProgram(program), "Failed to release Program.");
 			} while(0);
 
@@ -317,6 +320,21 @@ void OclCompute::_4_setKernelArgsStatic() {
 		HANDLE_CLERROR(clSetKernelArg(kernels[i][4], ctr++, sizeof(cl_mem), &clBufB[i]), "Failed to set kernel args.");
 		HANDLE_CLERROR(clSetKernelArg(kernels[i][4], ctr++, sizeof(cl_mem), &clBufLambda[i]), "Failed to set kernel args.");
 
+		ctr = 0;
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufDeltaVel[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufBodyIndex[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstNormalD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstTangentD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstNormalD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstTangentD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstNormalM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstTangentM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstNormalM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufConstTangentM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufB[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufLambda[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], ctr++, sizeof(cl_mem), &clBufDeltaLambda[i]), "Failed to set kernel args.");
+
 	}
 }
 
@@ -351,7 +369,13 @@ void OclCompute::_0_run(unsigned int nBody, unsigned int nContacts,
 		HANDLE_CLERROR(clEnqueueFillBuffer(cmdQs[i], clBufDeltaVel[i], &f, sizeof(f), 0, sizeof(vec6) * nBody, 0, NULL, NULL), "Error filling buffer.");
 		HANDLE_CLERROR(clEnqueueFillBuffer(cmdQs[i], clBufLambda[i], &f, sizeof(f), 0, sizeof(vec2) * nContacts, 0, NULL, NULL), "Error filling buffer.");
 
-		HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 12, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 12, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 13, 2 * sizeof(uint) * nContacts, NULL), "Failed to set kernel args.");
+
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 14, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 15, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 16, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		//HANDLE_CLERROR(clSetKernelArg(kernels[i][4], 17, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
 		/*HANDLE_CLERROR(clSetKernelArg(kernels[i][0], 2, sizeof(cl_uint), &nBody), "Failed to set kernel args.");
 		HANDLE_CLERROR(clSetKernelArg(kernels[i][0], 3, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");*/
 
@@ -370,7 +394,10 @@ void OclCompute::_0_run(unsigned int nBody, unsigned int nContacts,
 			HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][2], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		}*/
 		//HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][3], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
-		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][4], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
+		//HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][4], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
+
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][5], 13, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");
+		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][5], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		HANDLE_CLERROR(clEnqueueReadBuffer(cmdQs[i], clBufDeltaVel[i], CL_TRUE, 0, sizeof(vec6) * nBody , &deltaVel[0], 0, NULL, NULL), "Error reading from buffer.");
 	}
 }
