@@ -32,7 +32,12 @@ void RigidBodySystem::addCube() {
 	entity->setMaterialName("Test/ColourTest");
 	entity->setCastShadows(true);
 	try {
-		bodies.push_back(RigidBody(bodies.size(), entity, true, showBoundingBox, mSceneMgr, glm::dvec3(30.0), 20.0, 1.0, glm::dvec3(0, 500, 0), collisionWorld, false));
+		srand(std::time(NULL));
+		int randx = (std::rand() % 200) - 100;
+		int randy = (std::rand() % 200) + 300;
+		int randz = (std::rand() % 200) - 100;
+		bodies.push_back(RigidBody(bodies.size(), entity, true, showBoundingBox, mSceneMgr, glm::dvec3(30.0), 20.0, 1.0, glm::dvec3(randx, randy, randz), collisionWorld, false));
+		std::cout<<"No. of bodies:"<<bodies.size()<<std::endl;
 	} catch(std::bad_alloc &xa) {
 		std::cerr<<"Couldn't Reallocate RigidBody stack"<<std::endl;
 		exit(0);
@@ -113,7 +118,7 @@ void RigidBodySystem::createScene(void)
 	OclCompute::init();
 
 	physicsInit();
-	bodies.reserve(10);
+	bodies.reserve(200);
 	// Create your scene here :)
 	addCube();
 	addGround();
@@ -392,6 +397,8 @@ void RigidBodySystem::animate() {
 			bufConstNormalD_B, bufConstNormalM_B,
 			bufConstTangentD_B, bufConstTangentM_B,
 			bufB);
+			if (mouseButtonDown)
+				std::cout<<"Num Contacts:"<<numContacts<<std::endl;
 	}
 /*
 	for (int j = 0; j < 500 && numContacts; j++) {
