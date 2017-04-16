@@ -18,7 +18,6 @@ http://www.ogre3d.org/wiki/
 #include "BaseApplication.h"
 
 #include "MeshObjects.h"
-
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #include <macUtils.h>
 #endif
@@ -142,8 +141,8 @@ void BaseApplication::createFrameListener(void)
     mInputContext.mKeyboard = mKeyboard;
     mInputContext.mMouse = mMouse;
     mTrayMgr = new OgreBites::SdkTrayManager("InterfaceName", mWindow, mInputContext, this);
-    mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
-    mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
+    //mTrayMgr->showFrameStats(OgreBites::TL_BOTTOMLEFT);
+    //mTrayMgr->showLogo(OgreBites::TL_BOTTOMRIGHT);
     mTrayMgr->hideCursor();
 
     // Create a params panel for displaying sample details
@@ -222,7 +221,7 @@ void BaseApplication::createResourceListener(void)
 //---------------------------------------------------------------------------
 void BaseApplication::loadResources(void)
 {
-    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
     MeshObjects::cubeObject();
 }
 //---------------------------------------------------------------------------
@@ -280,6 +279,7 @@ bool BaseApplication::setup(void)
     createScene();
 
     createFrameListener();
+
     raySceneQuery = mSceneMgr->createRayQuery(Ogre::Ray());
     return true;
 };
@@ -406,6 +406,7 @@ bool BaseApplication::keyPressed( const OIS::KeyEvent &arg )
     {
         mShutDown = true;
     }
+    keyPressedRigidBody(arg);
 
     mCameraMan->injectKeyDown(arg);
     return true;

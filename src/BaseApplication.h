@@ -137,6 +137,7 @@ protected:
     virtual void mousePressedRigidBody(OIS::MouseButtonID id) = 0;
     virtual void mouseMovedRigidBody(void) = 0;
     virtual void mouseReleasedRigidBody(void) = 0;
+    virtual void keyPressedRigidBody(const OIS::KeyEvent &arg) = 0;
 
 #ifdef OGRE_STATIC_LIB
     Ogre::StaticPluginLoader m_StaticPluginLoader;

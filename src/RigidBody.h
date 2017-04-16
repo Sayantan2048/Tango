@@ -120,7 +120,10 @@ public:
 		collisionWorld->addCollisionObject(collisionObject);
 		std::cout<<"Creating Copy of Rigid Body"<<std::endl;
 	}
-
+	void setOgrePosition() {
+		node->setPosition(p.x, p.y, p.z);
+		node->setOrientation(b2w_rot.w, b2w_rot.x,b2w_rot.y, b2w_rot.z);
+	}
 	~RigidBody() {
 		delete []vertices;
 		delete []indices;

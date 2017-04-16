@@ -99,6 +99,7 @@ void RigidBodySystem::addLight(void) {
 
 void RigidBodySystem::addOverlay() {
 	Ogre::OverlayManager& overlayManager = Ogre::OverlayManager::getSingleton();
+
 	// Create an overlay
 	Ogre::Overlay* crosshair = overlayManager.create("crosshair");
 	// Create a panel
@@ -110,21 +111,67 @@ void RigidBodySystem::addOverlay() {
 	crosshair->add2D( panel );
 	// Show the overlay
 	crosshair->show();
+
+	textItem = new OgreText();
+	textItem->setPos(0.0f,0.0f);
+   	textItem->setCol(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-void RigidBodySystem::createScene(void)
-{
+void RigidBodySystem::physicsProcess() {
+	physicsStart();
+	cv_physics.notify_one();
+
+	std::unique_lock<std::mutex> lk(m_physics);
+	cv_physics.wait(lk,  [this](){return !pausePhysics;});
+	lk.unlock();
+
+	Ogre::Timer physicsFpsTimer;
+	unsigned long time = physicsFpsTimer.getMilliseconds();
+	unsigned long numIter = 0;
+
+	for (;;) {
+		std::unique_lock<std::mutex> total_lock(m_physics_2);
+		physicsSystemLocked = true;
+		cv_physics_2.notify_one();
+		nContacts = physicsRun();
+		nBody = bodies.size();
+		physicsSystemLocked = false;
+		total_lock.unlock();
+		cv_physics_2.notify_one();
+		std::this_thread::sleep_for(std::chrono::microseconds(1));
+		numIter++;
+		unsigned long deltaTime;
+		if (deltaTime = (physicsFpsTimer.getMilliseconds() - time) > 1000) {
+			time = physicsFpsTimer.getMilliseconds();
+			physFPS = (float)numIter /(float) deltaTime;
+			numIter = 0;
+		}
+	}
+}
+
+void RigidBodySystem::physicsStart() {
+	std::lock_guard<std::mutex> lk(m_physics);
+
 	// Initialize Opencl
 	OclCompute::init();
 
 	physicsInit();
 	bodies.reserve(200);
+	pausePhysics = true;
+}
+
+void RigidBodySystem::createScene(void)
+{
+	pausePhysics = false;
+	t_physicsProcess = std::thread(&RigidBodySystem::physicsProcess, this);
+
+	std::unique_lock<std::mutex> lk(m_physics);
+	cv_physics.wait(lk,  [this](){return pausePhysics;});
+
 	// Create your scene here :)
 	addCube();
 	addGround();
-
 	addLight();
-
 	addOverlay();
 
     lineObject =  mSceneMgr->createManualObject("line");
@@ -150,6 +197,11 @@ void RigidBodySystem::createScene(void)
 
     if (captureFrames)
     	t_screenCapture = std::thread(&RigidBodySystem::screenCaptureDataProcess, this);
+
+    pausePhysics = false;
+    lk.unlock();
+    cv_physics.notify_one();
+    pauseAnim = false;
 }
 
 void RigidBodySystem::screenCaptureDataGenerate() {
@@ -177,257 +229,285 @@ void RigidBodySystem::screenCaptureDataGenerate() {
 
 	// Notify the other thread that the critical data is modified and recheck the condition if it is waiting.
 	cv.notify_one();
-
 }
+
 #ifndef OCL_SOLVE
-void RigidBodySystem::animate() {
+unsigned int RigidBodySystem::physicsRun() {
 	double dt = 0.05;
 	double bounce = 0.0;
 	double mu = 0.33;
 
 	if (mouseButtonDown) {
-		unsigned long i = pickBody[selectedEntity];
+			unsigned long i = pickBody[selectedEntity];
 
-		glm::dvec4 startWorld = bodies[i].getBodyToWorld(glm::dvec4(startPoint.x, startPoint.y, startPoint.z, 1));
-		lineObject->beginUpdate(0);
-		lineObject->position(startWorld.x, startWorld.y, startWorld.z);
-		lineObject->position(endPoint);
-		lineObject->end();
+			glm::dvec4 startWorld = bodies[i].getBodyToWorld(glm::dvec4(startPoint.x, startPoint.y, startPoint.z, 1));
+			lineObject->beginUpdate(0);
+			lineObject->position(startWorld.x, startWorld.y, startWorld.z);
+			lineObject->position(endPoint);
+			lineObject->end();
 
-		bodies[i].applyForce(glm::dvec3(startWorld),
-				getSpringForce(glm::dvec3(startWorld), glm::dvec3(endPoint.x, endPoint.y, endPoint.z),
-				bodies[i].getContactVelocity(glm::dvec3(startWorld))));
+			bodies[i].applyForce(glm::dvec3(startWorld),
+					getSpringForce(glm::dvec3(startWorld), glm::dvec3(endPoint.x, endPoint.y, endPoint.z),
+					bodies[i].getContactVelocity(glm::dvec3(startWorld))));
 	}
-	for (size_t i = 0; i < bodies.size(); i++)
-		bodies[i].applyForce(glm::dvec3(0, -10, 0));
-
-	collisionWorld->performDiscreteCollisionDetection();
-
-	int numManifolds = collisionWorld->getDispatcher()->getNumManifolds();
-
-	unsigned int numContacts = 1;
-	for (int i = 0; i < numManifolds; i++)
-		numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
-
-	if (numContacts > contacts.size()) {
-		try {
-			contacts.reserve(numContacts * 2);
-		} catch(std::bad_alloc &xa) {
-			std::cerr<<"Couldn't Reallocate Contact stack"<<std::endl;
-			exit(0);
-		}
-	}
-
-#ifndef PGS
-	for (int i = 0; i < numManifolds; i++) {
-		btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-		((RigidBody*)obA->getUserPointer())->numContacts += contactManifold->getNumContacts();
-		((RigidBody*)obB->getUserPointer())->numContacts += contactManifold->getNumContacts();
-	}
-#endif
-
-	numContacts = 0;
-	for (int i = 0; i < numManifolds; i++) {
-		btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-		contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
-		int _numContacts = contactManifold->getNumContacts();
-		//For each contact point in that manifold
-	    for (int j = 0; j < _numContacts; j++) {
-	      //Get the contact information
-	        btManifoldPoint& pt = contactManifold->getContactPoint(j);
-	        btVector3 contactPoint = (pt.getPositionWorldOnB());
-	        contacts[numContacts] = Contact((RigidBody *)obA->getUserPointer(), (RigidBody *)obB->getUserPointer(),
-	        		glm::dvec3(contactPoint.getX(), contactPoint.getY(), contactPoint.getZ()),
-					glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), bounce, dt);
-	        numContacts++;
-	    }
-	}
-
-#ifdef PGS
-	unsigned int contactPow2 = numContacts; // Round numContacts to next power of two.
-	contactPow2--;
-	contactPow2 |= contactPow2 >> 1;
-	contactPow2 |= contactPow2 >> 2;
-	contactPow2 |= contactPow2 >> 4;
-	contactPow2 |= contactPow2 >> 8;
-	contactPow2 |= contactPow2 >> 16;
-
-	srand(std::time(NULL));
-	for (int j = 0; j < 100 && numContacts; j++) {
-
-		for (unsigned int i = 0; i < numContacts; i++)
-			contacts[i].processed = false;
-
-		for (unsigned int i = 0; i < (numContacts>>1); i++) {
-			unsigned int randNum = std::rand() & contactPow2;
-			if (randNum >= numContacts) randNum >>= 2;
-			if (!contacts[randNum].processed)
-				contacts[randNum].processContact(mu);
-		}
-
-		for (unsigned int i = 0; i < numContacts; i++) {
-			if (!contacts[i].processed)
-				contacts[i].processContact(mu);
-		}
-	}
-#endif
-
-#ifndef PGS
-	for (int j = 0; j < 500 && numContacts; j++) {
-		for (unsigned int i = 0; i < numContacts; i++) {
-			//std::cout<<i<<" ContactNo: ";
-			contacts[i].processContact1(mu);
-		}
-
-		for (unsigned int i = 0; i < numContacts; i++)
-			contacts[i].processContact2();
-	}
-#endif
-
-	for (size_t i = 0; i < bodies.size() && numContacts; i++)
-			bodies[i].updateVelocity();
-
 
 	for (size_t i = 0; i < bodies.size(); i++)
-		bodies[i].advanceTime(dt);
+			bodies[i].applyForce(glm::dvec3(0, -10, 0));
 
-	if (captureFrames && (timer.getMilliseconds() - time) > 33) {
-		time = timer.getMilliseconds();
-		screenCaptureDataGenerate();
-	}
-}
+		collisionWorld->performDiscreteCollisionDetection();
 
-#else
-void RigidBodySystem::animate() {
-	double dt = 0.05;
-	double bounce = 0.0;
-	double mu = 0.33;
+		int numManifolds = collisionWorld->getDispatcher()->getNumManifolds();
 
-	if (mouseButtonDown) {
-		unsigned long i = pickBody[selectedEntity];
+		unsigned int numContacts = 1;
+		for (int i = 0; i < numManifolds; i++)
+			numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
 
-		glm::dvec4 startWorld = bodies[i].getBodyToWorld(glm::dvec4(startPoint.x, startPoint.y, startPoint.z, 1));
-		lineObject->beginUpdate(0);
-		lineObject->position(startWorld.x, startWorld.y, startWorld.z);
-		lineObject->position(endPoint);
-		lineObject->end();
-
-		bodies[i].applyForce(glm::dvec3(startWorld),
-				getSpringForce(glm::dvec3(startWorld), glm::dvec3(endPoint.x, endPoint.y, endPoint.z),
-				bodies[i].getContactVelocity(glm::dvec3(startWorld))));
-	}
-	for (size_t i = 0; i < bodies.size(); i++)
-		bodies[i].applyForce(glm::dvec3(0, -10, 0));
-
-	collisionWorld->performDiscreteCollisionDetection();
-
-	int numManifolds = collisionWorld->getDispatcher()->getNumManifolds();
-
-	unsigned int numContacts = 1;
-	for (int i = 0; i < numManifolds; i++)
-		numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
-
-	if (numContacts > contacts.size()) {
-		try {
-			contacts.reserve(numContacts * 2);
-			bodyIndex.reserve(numContacts * 2);
-			bufConstNormalD_A.reserve(numContacts * 2);
-			bufConstNormalM_A.reserve(numContacts * 2);
-			bufConstTangentD_A.reserve(numContacts * 2);
-			bufConstTangentM_A.reserve(numContacts * 2);
-			bufConstNormalD_B.reserve(numContacts * 2);
-			bufConstNormalM_B.reserve(numContacts * 2);
-			bufConstTangentD_B.reserve(numContacts * 2);
-			bufConstTangentM_B.reserve(numContacts * 2);
-			bufB.reserve(numContacts * 2);
-			bufLambda.reserve(numContacts * 2);
-			bufDeltaLambda.reserve(numContacts * 2);
-		} catch(std::bad_alloc &xa) {
-			std::cerr<<"Couldn't Reallocate Contact stack"<<std::endl;
-			exit(0);
+		if (numContacts > contacts.size()) {
+			try {
+				contacts.reserve(numContacts * 2);
+			} catch(std::bad_alloc &xa) {
+				std::cerr<<"Couldn't Reallocate Contact stack"<<std::endl;
+				exit(0);
+			}
 		}
-	}
-	if (bodies.size() != deltaVel.size()) {
-		try {
-			deltaVel.reserve(bodies.size());
+
+	#ifndef PGS
+		for (int i = 0; i < numManifolds; i++) {
+			btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
+			((RigidBody*)obA->getUserPointer())->numContacts += contactManifold->getNumContacts();
+			((RigidBody*)obB->getUserPointer())->numContacts += contactManifold->getNumContacts();
+		}
+	#endif
+
+		numContacts = 0;
+		for (int i = 0; i < numManifolds; i++) {
+			btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
+			contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
+			int _numContacts = contactManifold->getNumContacts();
+			//For each contact point in that manifold
+		    for (int j = 0; j < _numContacts; j++) {
+		      //Get the contact information
+		        btManifoldPoint& pt = contactManifold->getContactPoint(j);
+		        btVector3 contactPoint = (pt.getPositionWorldOnB());
+		        contacts[numContacts] = Contact((RigidBody *)obA->getUserPointer(), (RigidBody *)obB->getUserPointer(),
+		        		glm::dvec3(contactPoint.getX(), contactPoint.getY(), contactPoint.getZ()),
+						glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), bounce, dt);
+		        numContacts++;
+		    }
+		}
+
+	#ifdef PGS
+		unsigned int contactPow2 = numContacts; // Round numContacts to next power of two.
+		contactPow2--;
+		contactPow2 |= contactPow2 >> 1;
+		contactPow2 |= contactPow2 >> 2;
+		contactPow2 |= contactPow2 >> 4;
+		contactPow2 |= contactPow2 >> 8;
+		contactPow2 |= contactPow2 >> 16;
+
+		srand(std::time(NULL));
+		for (int j = 0; j < 100 && numContacts; j++) {
+
+			for (unsigned int i = 0; i < numContacts; i++)
+				contacts[i].processed = false;
+
+			for (unsigned int i = 0; i < (numContacts>>1); i++) {
+				unsigned int randNum = std::rand() & contactPow2;
+				if (randNum >= numContacts) randNum >>= 2;
+				if (!contacts[randNum].processed)
+					contacts[randNum].processContact(mu);
+			}
+
+			for (unsigned int i = 0; i < numContacts; i++) {
+				if (!contacts[i].processed)
+					contacts[i].processContact(mu);
+			}
+		}
+	#endif
+
+	#ifndef PGS
+		for (int j = 0; j < 500 && numContacts; j++) {
+			for (unsigned int i = 0; i < numContacts; i++) {
+				//std::cout<<i<<" ContactNo: ";
+				contacts[i].processContact1(mu);
+			}
+
+			for (unsigned int i = 0; i < numContacts; i++)
+				contacts[i].processContact2();
+		}
+	#endif
+
+		for (size_t i = 0; i < bodies.size() && numContacts; i++)
+				bodies[i].updateVelocity();
+
+		{
+			std::lock_guard<std::mutex> lk(m_physics);
+			pauseAnim = true;
+			cv_physics.notify_one();
 			for (size_t i = 0; i < bodies.size(); i++)
-				deltaVel[i].vLin = deltaVel[i].vAng = vec3(0, 0, 0);
-		} catch(std::bad_alloc &xa) {
-			std::cerr<<"Couldn't Reallocate Delta Velocity stack"<<std::endl;
-			exit(0);
-		}
-	}
-
-	for (int i = 0; i < numManifolds; i++) {
-		btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-		((RigidBody*)obA->getUserPointer())->numContacts += contactManifold->getNumContacts();
-		((RigidBody*)obB->getUserPointer())->numContacts += contactManifold->getNumContacts();
-	}
-
-	numContacts = 0;
-	for (int i = 0; i < numManifolds; i++) {
-		btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
-		const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
-		contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
-		int _numContacts = contactManifold->getNumContacts();
-		//For each contact point in that manifold
-	    for (int j = 0; j < _numContacts; j++) {
-	      //Get the contact information
-	        btManifoldPoint& pt = contactManifold->getContactPoint(j);
-	        btVector3 contactPoint = (pt.getPositionWorldOnB());
-	        contacts[numContacts] = Contact(numContacts, (RigidBody *)obA->getUserPointer(), (RigidBody *)obB->getUserPointer(),
-	        		glm::dvec3(contactPoint.getX(), contactPoint.getY(), contactPoint.getZ()),
-					glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), bounce, dt);
-	        numContacts++;
-	    }
-	}
-
-	if (numContacts > 0) {
-			OclCompute::_0_run(bodies.size(), numContacts,
-			deltaVel, bodyIndex,
-			bufConstNormalD_A, bufConstNormalM_A,
-			bufConstTangentD_A, bufConstTangentM_A,
-			bufConstNormalD_B, bufConstNormalM_B,
-			bufConstTangentD_B, bufConstTangentM_B,
-			bufB);
-			if (mouseButtonDown)
-				std::cout<<"Num Contacts:"<<numContacts<<std::endl;
-	}
-/*
-	for (int j = 0; j < 500 && numContacts; j++) {
-		for (unsigned int i = 0; i < numContacts; i++) {
-			//std::cout<<i<<" ContactNo: ";
-			contacts[i].processContact1(i, mu);
+				bodies[i].advanceTime(dt);
+			pauseAnim = false;
+			cv_physics.notify_one();
 		}
 
-		for (unsigned int i = 0; i < numContacts; i++)
-			contacts[i].processContact2(i);
-	}*/
+		return numContacts;
+}
+#else
+unsigned int RigidBodySystem::physicsRun() {
+	double dt = 0.05;
+	double bounce = 0.0;
+	double mu = 0.33;
 
+	if (mouseButtonDown) {
+			unsigned long i = pickBody[selectedEntity];
 
-	for (size_t i = 0; i < bodies.size() && numContacts; i++) {
-		bodies[i].updateVelocity(deltaVel[i].vLin, deltaVel[i].vAng);
-		deltaVel[i].vLin = deltaVel[i].vAng = vec3(0, 0, 0);
+			glm::dvec4 startWorld = bodies[i].getBodyToWorld(glm::dvec4(startPoint.x, startPoint.y, startPoint.z, 1));
+			//lineObject->beginUpdate(0);
+			//lineObject->position(startWorld.x, startWorld.y, startWorld.z);
+			//lineObject->position(endPoint);
+			//lineObject->end();
+
+			bodies[i].applyForce(glm::dvec3(startWorld),
+					getSpringForce(glm::dvec3(startWorld), glm::dvec3(endPoint.x, endPoint.y, endPoint.z),
+					bodies[i].getContactVelocity(glm::dvec3(startWorld))));
 	}
-
 
 	for (size_t i = 0; i < bodies.size(); i++)
-		bodies[i].advanceTime(dt);
+			bodies[i].applyForce(glm::dvec3(0, -10, 0));
 
+		collisionWorld->performDiscreteCollisionDetection();
+
+		int numManifolds = collisionWorld->getDispatcher()->getNumManifolds();
+
+		unsigned int numContacts = 1;
+		for (int i = 0; i < numManifolds; i++)
+			numContacts *= collisionWorld->getDispatcher()->getManifoldByIndexInternal(i)->getNumContacts();
+
+		if (numContacts > contacts.size()) {
+			try {
+				contacts.reserve(numContacts * 2);
+				bodyIndex.reserve(numContacts * 2);
+				bufConstNormalD_A.reserve(numContacts * 2);
+				bufConstNormalM_A.reserve(numContacts * 2);
+				bufConstTangentD_A.reserve(numContacts * 2);
+				bufConstTangentM_A.reserve(numContacts * 2);
+				bufConstNormalD_B.reserve(numContacts * 2);
+				bufConstNormalM_B.reserve(numContacts * 2);
+				bufConstTangentD_B.reserve(numContacts * 2);
+				bufConstTangentM_B.reserve(numContacts * 2);
+				bufB.reserve(numContacts * 2);
+				bufLambda.reserve(numContacts * 2);
+				bufDeltaLambda.reserve(numContacts * 2);
+			} catch(std::bad_alloc &xa) {
+				std::cerr<<"Couldn't Reallocate Contact stack"<<std::endl;
+				exit(0);
+			}
+		}
+		if (bodies.size() != deltaVel.size()) {
+			try {
+				deltaVel.reserve(bodies.size());
+				for (size_t i = 0; i < bodies.size(); i++)
+					deltaVel[i].vLin = deltaVel[i].vAng = vec3(0, 0, 0);
+			} catch(std::bad_alloc &xa) {
+				std::cerr<<"Couldn't Reallocate Delta Velocity stack"<<std::endl;
+				exit(0);
+			}
+		}
+
+		for (int i = 0; i < numManifolds; i++) {
+			btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
+			((RigidBody*)obA->getUserPointer())->numContacts += contactManifold->getNumContacts();
+			((RigidBody*)obB->getUserPointer())->numContacts += contactManifold->getNumContacts();
+		}
+
+		numContacts = 0;
+		for (int i = 0; i < numManifolds; i++) {
+			btPersistentManifold* contactManifold = collisionWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
+			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
+			contactManifold->refreshContactPoints(obA->getWorldTransform(), obB->getWorldTransform());
+			int _numContacts = contactManifold->getNumContacts();
+			//For each contact point in that manifold
+		    for (int j = 0; j < _numContacts; j++) {
+		      //Get the contact information
+		        btManifoldPoint& pt = contactManifold->getContactPoint(j);
+		        btVector3 contactPoint = (pt.getPositionWorldOnB());
+		        contacts[numContacts] = Contact(numContacts, (RigidBody *)obA->getUserPointer(), (RigidBody *)obB->getUserPointer(),
+		        		glm::dvec3(contactPoint.getX(), contactPoint.getY(), contactPoint.getZ()),
+						glm::dvec3(-pt.m_normalWorldOnB.getX(), -pt.m_normalWorldOnB.getY(), -pt.m_normalWorldOnB.getZ()), bounce, dt);
+		        numContacts++;
+		    }
+		}
+
+		if (numContacts > 0) {
+				OclCompute::_0_run(bodies.size(), numContacts,
+				deltaVel, bodyIndex,
+				bufConstNormalD_A, bufConstNormalM_A,
+				bufConstTangentD_A, bufConstTangentM_A,
+				bufConstNormalD_B, bufConstNormalM_B,
+				bufConstTangentD_B, bufConstTangentM_B,
+				bufB);
+				if (mouseButtonDown)
+					std::cout<<"Num Contacts:"<<numContacts<<std::endl;
+		}
+	/*
+		for (int j = 0; j < 500 && numContacts; j++) {
+			for (unsigned int i = 0; i < numContacts; i++) {
+				//std::cout<<i<<" ContactNo: ";
+				contacts[i].processContact1(i, mu);
+			}
+
+			for (unsigned int i = 0; i < numContacts; i++)
+				contacts[i].processContact2(i);
+		}*/
+
+
+		for (size_t i = 0; i < bodies.size() && numContacts; i++) {
+			bodies[i].updateVelocity(deltaVel[i].vLin, deltaVel[i].vAng);
+			deltaVel[i].vLin = deltaVel[i].vAng = vec3(0, 0, 0);
+		}
+
+		{
+			std::lock_guard<std::mutex> lk(m_physics);
+			pauseAnim = true;
+			cv_physics.notify_one();
+			for (size_t i = 0; i < bodies.size(); i++)
+				bodies[i].advanceTime(dt);
+			pauseAnim = false;
+			cv_physics.notify_one();
+		}
+		//std::cout<<"Running"<<std::endl;
+
+		return numContacts;
+}
+#endif
+
+void RigidBodySystem::animate() {
 	if (captureFrames && (timer.getMilliseconds() - time) > 33) {
 		time = timer.getMilliseconds();
 		screenCaptureDataGenerate();
 	}
-}
+	std::string info = "Physics FPS: " + std::to_string((unsigned int)physFPS);
+	info += "\nContacts: " + std::to_string(nContacts);
+	info += "\nBodies: " + std::to_string(nBody);
+	info += "\nAnimation FPS: " + std::to_string((unsigned int)mWindow->getAverageFPS());
+	if (captureFrames)
+		info += "\nRecording @30FPS";
+	textItem->setText(info);    // Text to be displayed
 
-#endif
+
+	std::unique_lock<std::mutex> lk(m_physics);
+	cv_physics.wait(lk,  [this](){return !pauseAnim;});
+	for (size_t i = 0; i < bodies.size(); i++)
+			bodies[i].setOgrePosition();
+	lk.unlock();
+}
 
 inline std::string pad(int n, int len) {
     std::string result(len--, '0');
@@ -467,7 +547,10 @@ void RigidBodySystem::screenCaptureDataProcess() {
 
 void RigidBodySystem::mousePressedRigidBody(OIS::MouseButtonID id) {
 	if (id == OIS::MB_Right) {
+		std::unique_lock<std::mutex> lk(m_physics_2);
+		cv_physics_2.wait(lk,  [this](){return !physicsSystemLocked;});
 		addCube();
+		lk.unlock();
 	}
 	else {
 		//Object Picking
@@ -521,6 +604,12 @@ void RigidBodySystem::mouseReleasedRigidBody() {
 		lineObject->end();
 		std::cout<<"Object Released"<<std::endl;
 	}
+}
+
+void RigidBodySystem::keyPressedRigidBody(const OIS::KeyEvent &arg) {
+	 if (arg.key == OIS::KC_SPACE) {
+		 captureFrames = !captureFrames;
+	 }
 }
 
 //---------------------------------------------------------------------------

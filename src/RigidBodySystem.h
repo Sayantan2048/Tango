@@ -8,6 +8,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <btBulletDynamicsCommon.h>
+#include "OgreText.h"
 
 //---------------------------------------------------------------------------
 
@@ -31,6 +32,7 @@ private:
 	std::vector<Contact> contacts;
 	std::map<Ogre::Entity*, unsigned long> pickBody;
 	Ogre::ManualObject* lineObject; //Draw the force line when an object is dragged
+	OgreText *textItem;
 	glm::dvec3 getSpringForce(glm::dvec3 startPoint, glm::dvec3 endPoint, glm::dvec3 vel) {
 		double k = 0.1;
 		double c = 0.001;
@@ -56,6 +58,7 @@ protected:
     virtual void mousePressedRigidBody(OIS::MouseButtonID id);
     virtual void mouseMovedRigidBody(void);
     virtual void mouseReleasedRigidBody(void);
+    virtual void keyPressedRigidBody(const OIS::KeyEvent &arg);
 
 private:
     void addNinja(void);
@@ -76,9 +79,27 @@ private:
     std::condition_variable cv;
     void screenCaptureDataGenerate();
     std::queue<Ogre::PixelBox> imageBuffer;
+
+
+    void physicsProcess();
+    unsigned int physicsRun();
+    void physicsStart();
+    std::thread t_physicsProcess;
+    std::mutex m_physics;
+    std::mutex m_physics_2;
+    std::condition_variable cv_physics;
+    std::condition_variable cv_physics_2;
+    bool pausePhysics;
+    bool physicsSystemLocked;
+    bool pauseAnim;
+
+    //Display variables
+    float physFPS;
+    unsigned int nContacts;
+    unsigned int nBody;
 };
 
-bool RigidBodySystem::captureFrames = false;
+bool RigidBodySystem::captureFrames = true;
 bool RigidBodySystem::showBoundingBox = false;
 //---------------------------------------------------------------------------
 

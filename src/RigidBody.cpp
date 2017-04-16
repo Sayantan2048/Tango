@@ -154,8 +154,6 @@ void RigidBody::advanceTime(double dt) {
 
 	glm::normalize(b2w_rot);
 	updateTransform();
-	node->setPosition(p.x, p.y, p.z);
-	node->setOrientation(b2w_rot.w, b2w_rot.x,b2w_rot.y, b2w_rot.z);
 
 	f = glm::dvec3(0,0,0);
 	t = glm::dvec3(0,0,0);

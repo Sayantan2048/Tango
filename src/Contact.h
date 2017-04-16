@@ -14,8 +14,8 @@
 #define isZero(value, threshold) \
         (value >= -threshold && value <= threshold)
 
-#define OCL_SOLVE
-//#define PGS
+//#define OCL_SOLVE
+#define PGS
 #ifndef OCL_SOLVE
 #ifdef PGS
 
