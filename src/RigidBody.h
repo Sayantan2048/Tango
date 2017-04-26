@@ -75,7 +75,7 @@ public:
 
 	void advanceTime(double dt);
 	void applyForce(glm::dvec3 contact, glm::dvec3 force);
-	void applyForce(glm::dvec3 force){f += force;};
+	inline void applyForce(const glm::dvec3 &acc) {f += constrained ? glm::dvec3(0,0,0) : acc / iMass;}
 
 	inline glm::dvec3 getRcrossN(const glm::dvec3 &contact, const glm::dvec3 &normal) const { return glm::cross(contact - p, normal);}
 	//Scale a vector by inverse mass

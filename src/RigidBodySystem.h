@@ -11,6 +11,10 @@
 #include "OgreText.h"
 
 //---------------------------------------------------------------------------
+struct ContactInfo {
+	float pentrationError;
+	unsigned int numContacts;
+};
 
 class RigidBodySystem : public BaseApplication
 {
@@ -27,6 +31,10 @@ public:
 		delete collisionConfiguration;
 		delete broadphase;
 	};
+	static double dt;
+	static double bounce;
+	static double mu;
+	static double gravity;
 private:
 	std::vector<RigidBody> bodies;
 	std::vector<Contact> contacts;
@@ -34,7 +42,7 @@ private:
 	Ogre::ManualObject* lineObject; //Draw the force line when an object is dragged
 	OgreText *textItem;
 	glm::dvec3 getSpringForce(glm::dvec3 startPoint, glm::dvec3 endPoint, glm::dvec3 vel) {
-		double k = 0.1;
+		double k = 0.5;
 		double c = 0.001;
 
 		glm::dvec3 dx = endPoint - startPoint;
@@ -82,7 +90,7 @@ private:
 
 
     void physicsProcess();
-    unsigned int physicsRun();
+    ContactInfo physicsRun();
     void physicsStart();
     std::thread t_physicsProcess;
     std::mutex m_physics;
@@ -95,12 +103,17 @@ private:
 
     //Display variables
     float physFPS;
-    unsigned int nContacts;
+    ContactInfo contactInfo;
     unsigned int nBody;
 };
 
-bool RigidBodySystem::captureFrames = true;
+bool RigidBodySystem::captureFrames = false;
 bool RigidBodySystem::showBoundingBox = false;
+
+double RigidBodySystem::dt = 0.05;
+double RigidBodySystem::bounce = 0.0;
+double RigidBodySystem::mu = 0.33;
+double RigidBodySystem::gravity = -0.1;
 //---------------------------------------------------------------------------
 
 #endif // #ifndef __TutorialApplication_h_

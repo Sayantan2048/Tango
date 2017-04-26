@@ -13,6 +13,7 @@ typedef struct {
   vec3 vAng;
 } vec6;
 
+// Kernel 0
 __kernel void clearBuffer(__global scalar *deltaVel, __global scalar *lambda, uint nBody, uint nContacts) {
   size_t i = get_global_id(0);
   
@@ -104,6 +105,7 @@ inline void unpack2(__global scalar *vIn, vec2 v) {
   vIn[1] = v.y;
 }
 
+// Kernel 1
 __kernel void jacobi_parallel(__global scalar *deltaVel, __global uint *bufBodyIndex, __global scalar *bufConstNormalD_A,
 	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B, 
 	__global scalar *bufB, __global scalar *bufLambda, __global scalar *bufDeltaLambda) {
@@ -129,7 +131,7 @@ __kernel void jacobi_parallel(__global scalar *deltaVel, __global uint *bufBodyI
 	//show6(constNormalD_A);
 	//printf("%f %f\n", lambda_final1, lambda_final2);		
 	lambda_final1 = (lambda_final1 < 0) ? 0 : lambda_final1;
-	scalar max_tangent1 = 0.33 * lambda_final1;
+	scalar max_tangent1 = MU * lambda_final1;
 	lambda_final2 = (lambda_final2 < -max_tangent1) ? -max_tangent1 : lambda_final2;
 	lambda_final2 = (lambda_final2 > max_tangent1) ? max_tangent1 : lambda_final2;
 	
@@ -146,7 +148,7 @@ __kernel void jacobi_parallel(__global scalar *deltaVel, __global uint *bufBodyI
 }
 
 //http://suhorukov.blogspot.ca/2011/12/opencl-11-atomic-operations-on-floating.html
-inline void atomicAdd(volatile __global float *source, const float operand) {
+/*inline void atomicAdd(volatile __global float *source, const float operand) {
   union {
     unsigned int intVal;
     float floatVal;
@@ -160,9 +162,23 @@ inline void atomicAdd(volatile __global float *source, const float operand) {
     newVal.floatVal = prevVal.floatVal + operand;
   } while (atomic_cmpxchg((volatile __global unsigned int *)source, prevVal.intVal, newVal.intVal) != prevVal.intVal);
   // Loop until source stops changing   
+}*/
+
+inline void atomicAdd(volatile __global float *addr, float val) {
+  union{
+    unsigned int u32;
+    float        f32;
+  } next, expected, current;
+  current.f32    = *addr;
+  do{
+    expected.f32 = current.f32;
+    next.f32     = expected.f32 + val;
+    current.u32  = atomic_cmpxchg( (volatile __global unsigned int *)addr, 
+	expected.u32, next.u32);
+  } while( current.u32 != expected.u32 );
 }
 
-
+// Kernel 2
 __kernel void jacobi_serial(volatile __global scalar *bufDeltaVel,  __global uint *bufBodyIndex, __global scalar *bufConstNormalM_A,
 	__global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, __global scalar *bufConstTangentM_B, 
 	__global scalar *bufDeltaLambda) {
@@ -204,10 +220,11 @@ __kernel void jacobi_serial(volatile __global scalar *bufDeltaVel,  __global uin
   barrier(CLK_GLOBAL_MEM_FENCE);
 }
 
+// Kernel 3
 __kernel void jacobi_comb(volatile __global scalar *deltaVel, __global uint *bufBodyIndex, __global scalar *bufConstNormalD_A,
 	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
 	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
-	__global scalar *bufConstTangentM_B, __global scalar *bufB)
+	__global scalar *bufConstTangentM_B, __global scalar *bufB, uint numContacts)
 {
   size_t i = get_global_id(0);
   ivec2 bodyIndex = ipack2(&bufBodyIndex[i<<1]);
@@ -227,11 +244,12 @@ __kernel void jacobi_comb(volatile __global scalar *deltaVel, __global uint *buf
   lambda2 = 0;
   
   int iter;
-  
+   
   volatile __global scalar *ptrA = &deltaVel[6 * bodyIndex.x];
   volatile __global scalar *ptrB = &deltaVel[6 * bodyIndex.y];
   
-  for (iter = 0; iter < 250; iter++) {
+  if (i < numContacts)
+  for (iter = 0; iter < ITER_COUNT; iter++) {
 	vec6 deltaVelA = pack6(ptrA);
 	vec6 deltaVelB = pack6(ptrB);
 	
@@ -245,7 +263,7 @@ __kernel void jacobi_comb(volatile __global scalar *deltaVel, __global uint *buf
 	//show6(constNormalD_A);
 	//printf("%f %f\n", lambda_final1, lambda_final2);		
 	lambda_final1 = (lambda_final1 < 0) ? 0 : lambda_final1;
-	scalar max_tangent1 = 0.33 * lambda_final1;
+	scalar max_tangent1 = MU * lambda_final1;
 	lambda_final2 = (lambda_final2 < -max_tangent1) ? -max_tangent1 : lambda_final2;
 	lambda_final2 = (lambda_final2 > max_tangent1) ? max_tangent1 : lambda_final2;
 	
@@ -278,8 +296,8 @@ __kernel void jacobi_comb(volatile __global scalar *deltaVel, __global uint *buf
 	
 	barrier(CLK_GLOBAL_MEM_FENCE);
   }
-  
 }
+
 /*
   a1 = 0;
   a2 = 0;
@@ -320,6 +338,8 @@ __kernel void jacobi_comb(volatile __global scalar *deltaVel, __global uint *buf
 
 
 */
+
+// Kernel 4
 __kernel void jacobi_v2(volatile __global scalar *deltaVel, __global uint *bufBodyIndex, __global scalar *bufConstNormalD_A,
 	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
 	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
@@ -383,7 +403,7 @@ __kernel void jacobi_v2(volatile __global scalar *deltaVel, __global uint *bufBo
   volatile __global scalar *ptrA = &deltaVel[6 * bodyIndex.x];
   volatile __global scalar *ptrB = &deltaVel[6 * bodyIndex.y];
   
-  for (iter = 0; iter < 500; iter++) {
+  for (iter = 0; iter < ITER_COUNT; iter++) {
     scalar a1 = 0;
     scalar a2 = 0;
     uint j;
@@ -429,7 +449,7 @@ __kernel void jacobi_v2(volatile __global scalar *deltaVel, __global uint *bufBo
     lambda.y = lambda.y - b.y - a2;
     
     lambda.x = (lambda.x < 0) ? 0 : lambda.x;
-    scalar max_tangent1 = 0.33 * lambda.x;
+    scalar max_tangent1 = MU * lambda.x;
     lambda.y = (lambda.y < -max_tangent1) ? -max_tangent1 : lambda.y;
     lambda.y = (lambda.y > max_tangent1) ? max_tangent1 : lambda.y;
         
@@ -462,6 +482,7 @@ __kernel void jacobi_v2(volatile __global scalar *deltaVel, __global uint *bufBo
   atomicAdd(&ptrB[5], deltaVelB.vAng.c);
 }
 
+// Kernel 5 
 __kernel void jacobi_v3(volatile __global scalar *deltaVel, __global ivec2 *bufBodyIndex, __global scalar *bufConstNormalD_A,
 	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
 	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
@@ -555,7 +576,7 @@ __kernel void jacobi_v3(volatile __global scalar *deltaVel, __global ivec2 *bufB
     vec2 b = bufB[i];
     uint iter;
   
-    for (iter = 0; iter < 500; iter++) {
+    for (iter = 0; iter < ITER_COUNT; iter++) {
       scalar a1 = 0;
       scalar a2 = 0;
       uint j;
@@ -570,7 +591,7 @@ __kernel void jacobi_v3(volatile __global scalar *deltaVel, __global ivec2 *bufB
       lambda.y = lambda.y - b.y - a2;
     
       lambda.x = (lambda.x < 0) ? 0 : lambda.x;
-      scalar max_tangent1 = 0.33 * lambda.x;
+      scalar max_tangent1 = MU * lambda.x;
       lambda.y = (lambda.y < -max_tangent1) ? -max_tangent1 : lambda.y;
       lambda.y = (lambda.y > max_tangent1) ? max_tangent1 : lambda.y;
         
@@ -614,6 +635,7 @@ __kernel void jacobi_v3(volatile __global scalar *deltaVel, __global ivec2 *bufB
   }
 }
 
+// Kernel 6
 __kernel void jacobi_v3_split1(__global ivec2 *bufBodyIndex, __global scalar *bufConstNormalD_A,
 	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
 	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
@@ -698,6 +720,8 @@ __kernel void jacobi_v3_split1(__global ivec2 *bufBodyIndex, __global scalar *bu
     }
   }
 }
+
+// Kernel 7
 __kernel void jacobi_v3_split2(volatile __global scalar *deltaVel, __global ivec2 *bufBodyIndex, __global scalar *bufConstNormalM_A, 
 	__global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, __global scalar *bufConstTangentM_B, 
 	__global vec2 *bufB, __global vec2 *bufLambda, __global vec4 *matrixA, uint numContacts) {
@@ -713,7 +737,7 @@ __kernel void jacobi_v3_split2(volatile __global scalar *deltaVel, __global ivec
     vec2 b = bufB[i];
     uint iter;
   
-    for (iter = 0; iter < 250; iter++) {
+    for (iter = 0; iter < ITER_COUNT; iter++) {
       scalar a1 = 0;
       scalar a2 = 0;
       uint j;
@@ -728,7 +752,7 @@ __kernel void jacobi_v3_split2(volatile __global scalar *deltaVel, __global ivec
       lambda.y = lambda.y - b.y - a2;
     
       lambda.x = (lambda.x < 0) ? 0 : lambda.x;
-      scalar max_tangent1 = 0.33 * lambda.x;
+      scalar max_tangent1 = MU * lambda.x;
       lambda.y = (lambda.y < -max_tangent1) ? -max_tangent1 : lambda.y;
       lambda.y = (lambda.y > max_tangent1) ? max_tangent1 : lambda.y;
         
@@ -770,6 +794,338 @@ __kernel void jacobi_v3_split2(volatile __global scalar *deltaVel, __global ivec
     atomicAdd(&ptrB[3], deltaVelB.vAng.ab.x);
     atomicAdd(&ptrB[4], deltaVelB.vAng.ab.y);
     atomicAdd(&ptrB[5], deltaVelB.vAng.c);
+  }
+}
+
+// Kernel 8
+__kernel void jacobi_comb_v4(volatile __global scalar *deltaVel, __global uint *bufBodyIndex, __global scalar *bufConstNormalD_A,
+	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
+	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
+	__global scalar *bufConstTangentM_B, __global scalar *bufB, __global scalar *bufLambda)
+{
+  size_t i = get_global_id(0);
+  ivec2 bodyIndex = ipack2(&bufBodyIndex[i<<1]);
+  vec6 constNormalD_A = pack6(&bufConstNormalD_A[6 * i]);
+  vec6 constNormalD_B = pack6(&bufConstNormalD_B[6 * i]);
+  vec6 constTangentD_A = pack6(&bufConstTangentD_A[6 * i]);
+  vec6 constTangentD_B = pack6(&bufConstTangentD_B[6 * i]);
+  vec6 constNormalM_A = pack6(&bufConstNormalM_A[6 * i]);
+  vec6 constNormalM_B = pack6(&bufConstNormalM_B[6 * i]);
+  vec6 constTangentM_A = pack6(&bufConstTangentM_A[6 * i]);
+  vec6 constTangentM_B = pack6(&bufConstTangentM_B[6 * i]);
+  vec2 b = pack2(&bufB[i<<1]);
+
+  scalar lambda1;
+  scalar lambda2;
+  lambda1 = 0;
+  lambda2 = 0;
+  
+  int iter;
+  
+  volatile __global scalar *ptrA = &deltaVel[6 * bodyIndex.x];
+  volatile __global scalar *ptrB = &deltaVel[6 * bodyIndex.y];
+  
+  for (iter = 0; iter < ITER_COUNT; iter++) {
+	vec6 deltaVelA = pack6(ptrA);
+	vec6 deltaVelB = pack6(ptrB);
+	
+	scalar lambda_final1 = lambda1 - b.x - dot3(constNormalD_A.vLin, deltaVelA.vLin)
+	    		- dot3(constNormalD_A.vAng, deltaVelA.vAng) - dot3(constNormalD_B.vLin, deltaVelB.vLin)
+    			- dot3(constNormalD_B.vAng, deltaVelB.vAng);
+	scalar lambda_final2 = lambda2 - b.y - dot3(constTangentD_A.vLin, deltaVelA.vLin)
+	    		- dot3(constTangentD_A.vAng, deltaVelA.vAng) - dot3(constTangentD_B.vLin, deltaVelB.vLin)
+    			- dot3(constTangentD_B.vAng, deltaVelB.vAng);
+	
+	//show6(constNormalD_A);
+	//printf("%f %f\n", lambda_final1, lambda_final2);		
+	lambda_final1 = (lambda_final1 < 0) ? 0 : lambda_final1;
+	scalar max_tangent1 = MU * lambda_final1;
+	lambda_final2 = (lambda_final2 < -max_tangent1) ? -max_tangent1 : lambda_final2;
+	lambda_final2 = (lambda_final2 > max_tangent1) ? max_tangent1 : lambda_final2;
+	
+	scalar deltaLambda1;
+	scalar deltaLambda2;
+	deltaLambda1 = lambda_final1 - lambda1;
+	deltaLambda2 = lambda_final2 - lambda2;
+	lambda1 = lambda_final1;
+	lambda2 = lambda_final2;
+	
+	deltaVelA.vLin = add3(mul3s(constNormalM_A.vLin, deltaLambda1), mul3s(constTangentM_A.vLin, deltaLambda2));
+	deltaVelA.vAng = add3(mul3s(constNormalM_A.vAng, deltaLambda1), mul3s(constTangentM_A.vAng, deltaLambda2));
+
+	deltaVelB.vLin = add3(mul3s(constNormalM_B.vLin, deltaLambda1), mul3s(constTangentM_B.vLin, deltaLambda2));
+	deltaVelB.vAng = add3(mul3s(constNormalM_B.vAng, deltaLambda1), mul3s(constTangentM_B.vAng, deltaLambda2));
+	
+	atomicAdd(&ptrA[0], deltaVelA.vLin.ab.x);
+	atomicAdd(&ptrA[1], deltaVelA.vLin.ab.y);
+	atomicAdd(&ptrA[2], deltaVelA.vLin.c);
+	atomicAdd(&ptrA[3], deltaVelA.vAng.ab.x);
+	atomicAdd(&ptrA[4], deltaVelA.vAng.ab.y);
+	atomicAdd(&ptrA[5], deltaVelA.vAng.c);
+	
+	atomicAdd(&ptrB[0], deltaVelB.vLin.ab.x);
+	atomicAdd(&ptrB[1], deltaVelB.vLin.ab.y);
+	atomicAdd(&ptrB[2], deltaVelB.vLin.c);
+	atomicAdd(&ptrB[3], deltaVelB.vAng.ab.x);
+	atomicAdd(&ptrB[4], deltaVelB.vAng.ab.y);
+	atomicAdd(&ptrB[5], deltaVelB.vAng.c);
+	
+	barrier(CLK_GLOBAL_MEM_FENCE);
+  }
+  
+  bufLambda[i << 1] = lambda1;
+  bufLambda[(i << 1) + 1] = lambda2;
+}
+
+inline void mul6s(__global scalar *vIn, scalar s) {
+  
+  vIn[0] = vIn[0] * s;
+  vIn[1] = vIn[1] * s;
+  vIn[2] = vIn[2] * s;
+  vIn[3] = vIn[3] * s;
+  vIn[4] = vIn[4] * s;
+  vIn[5] = vIn[5] * s;
+}
+
+inline void mul2s(__global scalar *vIn, scalar s) {
+  vIn[0] = vIn[0] * s;
+  vIn[1] = vIn[1] * s;
+}
+
+/*
+// Kenrel 9
+__kernel void jacobi_norm(__global ivec2 *bufBodyIndex, __global scalar *bufConstNormalD_A,
+	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
+	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
+	__global scalar *bufConstTangentM_B, __global vec4 *matrixA, __global scalar *bufB, uint numContacts,
+	__local ivec2 *s_bufBodyIndex, __local scalar *s_bufConstNormalM_A, __local scalar *s_bufConstTangentM_A,
+	__local scalar *s_bufConstNormalM_B, __local scalar *s_bufConstTangentM_B)
+{
+  size_t i = get_global_id(0);
+  ivec2 bodyIndex = bufBodyIndex[i];
+ {
+    vec6 constNormalD_A = pack6(&bufConstNormalD_A[6 * i]);
+    vec6 constNormalD_B = pack6(&bufConstNormalD_B[6 * i]);
+    vec6 constTangentD_A = pack6(&bufConstTangentD_A[6 * i]);
+    vec6 constTangentD_B = pack6(&bufConstTangentD_B[6 * i]);
+ 
+    uint s;
+    for (s = get_local_id(0); s < numContacts; s += get_local_size(0)) {
+	s_bufBodyIndex[s] = bufBodyIndex[s];
+   
+	uint temp = s * 6;
+	s_bufConstNormalM_A[temp] = bufConstNormalM_A[temp];
+	s_bufConstNormalM_A[temp + 1] = bufConstNormalM_A[temp + 1];
+	s_bufConstNormalM_A[temp + 2] = bufConstNormalM_A[temp + 2];
+	s_bufConstNormalM_A[temp + 3] = bufConstNormalM_A[temp + 3];
+	s_bufConstNormalM_A[temp + 4] = bufConstNormalM_A[temp + 4];
+	s_bufConstNormalM_A[temp + 5] = bufConstNormalM_A[temp + 5];
+    
+	s_bufConstTangentM_A[temp] = bufConstTangentM_A[temp];
+	s_bufConstTangentM_A[temp + 1] = bufConstTangentM_A[temp + 1];
+	s_bufConstTangentM_A[temp + 2] = bufConstTangentM_A[temp + 2];
+	s_bufConstTangentM_A[temp + 3] = bufConstTangentM_A[temp + 3];
+	s_bufConstTangentM_A[temp + 4] = bufConstTangentM_A[temp + 4];
+	s_bufConstTangentM_A[temp + 5] = bufConstTangentM_A[temp + 5];
+    
+	s_bufConstNormalM_B[temp] = bufConstNormalM_B[temp];
+	s_bufConstNormalM_B[temp + 1] = bufConstNormalM_B[temp + 1];
+	s_bufConstNormalM_B[temp + 2] = bufConstNormalM_B[temp + 2];
+	s_bufConstNormalM_B[temp + 3] = bufConstNormalM_B[temp + 3];
+	s_bufConstNormalM_B[temp + 4] = bufConstNormalM_B[temp + 4];
+	s_bufConstNormalM_B[temp + 5] = bufConstNormalM_B[temp + 5];
+    
+	s_bufConstTangentM_B[temp] = bufConstTangentM_B[temp];
+	s_bufConstTangentM_B[temp + 1] = bufConstTangentM_B[temp + 1];
+	s_bufConstTangentM_B[temp + 2] = bufConstTangentM_B[temp + 2];
+	s_bufConstTangentM_B[temp + 3] = bufConstTangentM_B[temp + 3];
+	s_bufConstTangentM_B[temp + 4] = bufConstTangentM_B[temp + 4];
+	s_bufConstTangentM_B[temp + 5] = bufConstTangentM_B[temp + 5];
+    }
+    barrier(CLK_LOCAL_MEM_FENCE);
+  
+    for (s = 0; s < numContacts; s++) {
+      ivec2 bodyIndexI = s_bufBodyIndex[s];
+      uint temp = s * 6;
+      vec4 a;
+      a.x = 0, a.y = 0, a.z = 0, a.w = 0;
+      if (bodyIndex.x == bodyIndexI.x) {
+	  vec6 cnA = s_pack6(&s_bufConstNormalM_A[temp]);
+	  vec6 ctA = s_pack6(&s_bufConstTangentM_A[temp]);
+	  a.x = dot6(constNormalD_A, cnA); a.y = dot6(constNormalD_A, ctA);
+	  a.z = dot6(constTangentD_A, cnA); a.w = dot6(constTangentD_A, ctA);
+      }
+      else if (bodyIndex.x == bodyIndexI.y) {
+	  vec6 cnB = s_pack6(&s_bufConstNormalM_B[temp]);
+	  vec6 ctB = s_pack6(&s_bufConstTangentM_B[temp]);
+	  a.x = dot6(constNormalD_A, cnB); a.y = dot6(constNormalD_A, ctB);
+	  a.z = dot6(constTangentD_A, cnB); a.w = dot6(constTangentD_A, ctB);
+      }
+      if (bodyIndex.y == bodyIndexI.x) {
+	  vec6 cnA = s_pack6(&s_bufConstNormalM_A[temp]);
+	  vec6 ctA = s_pack6(&s_bufConstTangentM_A[temp]);
+	  a.x += dot6(constNormalD_B, cnA); a.y += dot6(constNormalD_B, ctA);
+	  a.z += dot6(constTangentD_B, cnA); a.w += dot6(constTangentD_B, ctA);
+      }
+      else if (bodyIndex.y == bodyIndexI.y) {
+	  vec6 cnB = s_pack6(&s_bufConstNormalM_B[temp]);
+	  vec6 ctB = s_pack6(&s_bufConstTangentM_B[temp]);
+	  a.x += dot6(constNormalD_B, cnB); a.y += dot6(constNormalD_B, ctB);
+	  a.z += dot6(constTangentD_B, cnB); a.w += dot6(constTangentD_B, ctB);
+      }
+       
+      matrixA[i * numContacts + s] = a;
+    }
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    
+    vec4 colSum;
+    colSum.x = colSum.y = 0;
+    for (s = 0; s < numContacts; s++) {
+       vec4 a = matrixA[s * numContacts + i];
+       colSum.x +=  fabs(a.x) + fabs(a.z);
+       colSum.y +=  fabs(a.y) + fabs(a.w);
+    }
+    colSum.x = colSum.x > colSum.y ? colSum.x : colSum.y;
+    matrixA[i] = colSum;
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    
+    if (i == 0) {
+	 vec4 a = matrixA[0];
+	 for (s = 1; s < numContacts; s++) {
+	     vec4 temp = matrixA[s];
+	     a.x = a.x > temp.x ? a.x : temp.x;
+	 }
+	 a.x *= sqrt((scalar)numContacts);
+	 matrixA[0] = a; 
+    }
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    
+    scalar invSpectralRadii = 2.0 / matrixA[0].x;
+    
+    //if (i == 0)
+      //printf("%f %f\n", matrixA[0].x, invSpectralRadii);
+    mul6s(&bufConstNormalD_A[6 * i], invSpectralRadii);
+    mul6s(&bufConstTangentD_A[6 * i], invSpectralRadii);
+    mul6s(&bufConstNormalD_B[6 * i], invSpectralRadii);
+    mul6s(&bufConstTangentD_B[6 * i], invSpectralRadii);
+    
+    mul2s(&bufB[i<<1], invSpectralRadii);
+    
+  }
+}*/
+
+// Kenrel 9
+__kernel void jacobi_norm(__global ivec2 *bufBodyIndex, __global scalar *bufConstNormalD_A,
+	__global scalar *bufConstTangentD_A, __global scalar *bufConstNormalD_B, __global scalar *bufConstTangentD_B,
+	__global scalar *bufConstNormalM_A, __global scalar *bufConstTangentM_A, __global scalar *bufConstNormalM_B, 
+	__global scalar *bufConstTangentM_B, __global scalar *tempBuf, __global scalar *bufB, uint numContacts,
+	__local ivec2 *s_bufBodyIndex, __local scalar *s_bufConstNormalM_A, __local scalar *s_bufConstTangentM_A,
+	__local scalar *s_bufConstNormalM_B, __local scalar *s_bufConstTangentM_B)
+{
+  size_t i = get_global_id(0);
+  ivec2 bodyIndex = bufBodyIndex[i];
+ {
+    vec6 constNormalD_A = pack6(&bufConstNormalD_A[6 * i]);
+    vec6 constNormalD_B = pack6(&bufConstNormalD_B[6 * i]);
+    vec6 constTangentD_A = pack6(&bufConstTangentD_A[6 * i]);
+    vec6 constTangentD_B = pack6(&bufConstTangentD_B[6 * i]);
+ 
+    uint s;
+    for (s = get_local_id(0); s < numContacts; s += get_local_size(0)) {
+	s_bufBodyIndex[s] = bufBodyIndex[s];
+   
+	uint temp = s * 6;
+	s_bufConstNormalM_A[temp] = bufConstNormalM_A[temp];
+	s_bufConstNormalM_A[temp + 1] = bufConstNormalM_A[temp + 1];
+	s_bufConstNormalM_A[temp + 2] = bufConstNormalM_A[temp + 2];
+	s_bufConstNormalM_A[temp + 3] = bufConstNormalM_A[temp + 3];
+	s_bufConstNormalM_A[temp + 4] = bufConstNormalM_A[temp + 4];
+	s_bufConstNormalM_A[temp + 5] = bufConstNormalM_A[temp + 5];
+    
+	s_bufConstTangentM_A[temp] = bufConstTangentM_A[temp];
+	s_bufConstTangentM_A[temp + 1] = bufConstTangentM_A[temp + 1];
+	s_bufConstTangentM_A[temp + 2] = bufConstTangentM_A[temp + 2];
+	s_bufConstTangentM_A[temp + 3] = bufConstTangentM_A[temp + 3];
+	s_bufConstTangentM_A[temp + 4] = bufConstTangentM_A[temp + 4];
+	s_bufConstTangentM_A[temp + 5] = bufConstTangentM_A[temp + 5];
+    
+	s_bufConstNormalM_B[temp] = bufConstNormalM_B[temp];
+	s_bufConstNormalM_B[temp + 1] = bufConstNormalM_B[temp + 1];
+	s_bufConstNormalM_B[temp + 2] = bufConstNormalM_B[temp + 2];
+	s_bufConstNormalM_B[temp + 3] = bufConstNormalM_B[temp + 3];
+	s_bufConstNormalM_B[temp + 4] = bufConstNormalM_B[temp + 4];
+	s_bufConstNormalM_B[temp + 5] = bufConstNormalM_B[temp + 5];
+    
+	s_bufConstTangentM_B[temp] = bufConstTangentM_B[temp];
+	s_bufConstTangentM_B[temp + 1] = bufConstTangentM_B[temp + 1];
+	s_bufConstTangentM_B[temp + 2] = bufConstTangentM_B[temp + 2];
+	s_bufConstTangentM_B[temp + 3] = bufConstTangentM_B[temp + 3];
+	s_bufConstTangentM_B[temp + 4] = bufConstTangentM_B[temp + 4];
+	s_bufConstTangentM_B[temp + 5] = bufConstTangentM_B[temp + 5];
+    }
+    barrier(CLK_LOCAL_MEM_FENCE);
+    
+    vec2 rowSum;
+    rowSum.x = rowSum.y = 0;
+    for (s = 0; s < numContacts; s++) {
+      ivec2 bodyIndexI = s_bufBodyIndex[s];
+      uint temp = s * 6;
+      vec4 a;
+      a.x = 0, a.y = 0, a.z = 0, a.w = 0;
+      if (bodyIndex.x == bodyIndexI.x) {
+	  vec6 cnA = s_pack6(&s_bufConstNormalM_A[temp]);
+	  vec6 ctA = s_pack6(&s_bufConstTangentM_A[temp]);
+	  a.x = dot6(constNormalD_A, cnA); a.y = dot6(constNormalD_A, ctA);
+	  a.z = dot6(constTangentD_A, cnA); a.w = dot6(constTangentD_A, ctA);
+      }
+      else if (bodyIndex.x == bodyIndexI.y) {
+	  vec6 cnB = s_pack6(&s_bufConstNormalM_B[temp]);
+	  vec6 ctB = s_pack6(&s_bufConstTangentM_B[temp]);
+	  a.x = dot6(constNormalD_A, cnB); a.y = dot6(constNormalD_A, ctB);
+	  a.z = dot6(constTangentD_A, cnB); a.w = dot6(constTangentD_A, ctB);
+      }
+      if (bodyIndex.y == bodyIndexI.x) {
+	  vec6 cnA = s_pack6(&s_bufConstNormalM_A[temp]);
+	  vec6 ctA = s_pack6(&s_bufConstTangentM_A[temp]);
+	  a.x += dot6(constNormalD_B, cnA); a.y += dot6(constNormalD_B, ctA);
+	  a.z += dot6(constTangentD_B, cnA); a.w += dot6(constTangentD_B, ctA);
+      }
+      else if (bodyIndex.y == bodyIndexI.y) {
+	  vec6 cnB = s_pack6(&s_bufConstNormalM_B[temp]);
+	  vec6 ctB = s_pack6(&s_bufConstTangentM_B[temp]);
+	  a.x += dot6(constNormalD_B, cnB); a.y += dot6(constNormalD_B, ctB);
+	  a.z += dot6(constTangentD_B, cnB); a.w += dot6(constTangentD_B, ctB);
+      }
+      rowSum.x +=  fabs(a.x) + fabs(a.y);
+      rowSum.y +=  fabs(a.z) + fabs(a.w);
+    }
+    rowSum.x = rowSum.x > rowSum.y ? rowSum.x : rowSum.y;
+    tempBuf[i] = rowSum.x;
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    
+    if (i == 0) {
+	 scalar a = tempBuf[0];
+	 for (s = 1; s < numContacts; s++) {
+	     scalar temp = tempBuf[s];
+	     a = a > temp ? a : temp;
+	 }
+	 a *= sqrt((scalar)numContacts);
+	 tempBuf[0] = a; 
+	 printf("%f\n", a); 
+    }
+    barrier(CLK_GLOBAL_MEM_FENCE);
+    
+    scalar invSpectralRadii = 2.0 / tempBuf[0];
+    
+    
+      
+    mul6s(&bufConstNormalD_A[6 * i], invSpectralRadii);
+    mul6s(&bufConstTangentD_A[6 * i], invSpectralRadii);
+    mul6s(&bufConstNormalD_B[6 * i], invSpectralRadii);
+    mul6s(&bufConstTangentD_B[6 * i], invSpectralRadii);
+    
+    mul2s(&bufB[i<<1], invSpectralRadii);
+    
   }
 }
 

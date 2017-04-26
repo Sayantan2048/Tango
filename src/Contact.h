@@ -14,7 +14,9 @@
 #define isZero(value, threshold) \
         (value >= -threshold && value <= threshold)
 
-//#define OCL_SOLVE
+#define ITER_COUNT 60
+
+#define OCL_SOLVE
 #define PGS
 #ifndef OCL_SOLVE
 #ifdef PGS
@@ -542,9 +544,14 @@ std::vector<vec2> bufLambda;
 std::vector<vec2> bufDeltaLambda;
 
 class Contact {
+	unsigned int numContactsA;
+	unsigned int numContactsB;
 
 public:
+	bool processed;
 	Contact(unsigned int index, RigidBody *A, RigidBody *B, const vec3 &contactPoint, const vec3 &contactNormal, scalar bounce, scalar dt) {
+		scalar sP = 1.0; // Decrease the value for stabilization
+
 		bodyIndex[index].indexA = A->index;
 		bodyIndex[index].indexB = B->index;
 
@@ -571,7 +578,7 @@ public:
 			exit(0);
 		}
 
-		D_row1_inv = 1.0 / D_row1_inv;
+		D_row1_inv = sP / D_row1_inv;
 
 		bufConstNormalD_A[index].vLin = linConstA * D_row1_inv; bufConstNormalD_A[index].vAng = angConstA * D_row1_inv;
 		bufConstNormalD_B[index].vLin = linConstB * D_row1_inv; bufConstNormalD_B[index].vAng = angConstB * D_row1_inv;
@@ -620,7 +627,7 @@ public:
 			exit(0);
 		}
 
-		D_row2_inv = 1.0 / D_row2_inv;
+		D_row2_inv = sP / D_row2_inv;
 
 		bufConstTangentD_A[index].vLin = linConstA * D_row2_inv; bufConstTangentD_A[index].vAng = angConstA * D_row2_inv;
 		bufConstTangentD_B[index].vLin = linConstB * D_row2_inv; bufConstTangentD_B[index].vAng = angConstB * D_row2_inv;
@@ -630,14 +637,20 @@ public:
 
 		bufB[index].s2 *= D_row2_inv;
 
+		numContactsA = 1;
+		numContactsB = 1;
 		//For stabilization
 		if (A->numContacts != 0) {
-			bufConstNormalM_A[index].vLin = bufConstNormalM_A[index].vLin / (scalar)A->numContacts;
-			bufConstNormalM_A[index].vAng = bufConstNormalM_A[index].vAng / (scalar)A->numContacts;
+			scalar factor = 1;
+			bufConstNormalM_A[index].vLin = factor * bufConstNormalM_A[index].vLin / (scalar)A->numContacts;
+			bufConstNormalM_A[index].vAng = factor * bufConstNormalM_A[index].vAng / (scalar)A->numContacts;
+			numContactsA = A->numContacts;
 		}
 		if (B->numContacts != 0) {
-			bufConstNormalM_B[index].vLin = bufConstNormalM_B[index].vLin / (scalar)B->numContacts;
-			bufConstNormalM_B[index].vAng = bufConstNormalM_B[index].vAng / (scalar)B->numContacts;
+			scalar factor = 1;
+			bufConstNormalM_B[index].vLin = factor * bufConstNormalM_B[index].vLin / (scalar)B->numContacts;
+			bufConstNormalM_B[index].vAng = factor * bufConstNormalM_B[index].vAng / (scalar)B->numContacts;
+			numContactsB = B->numContacts;
 		}
 		/* Compute constraints for tangential direction 2*/
 		// Just randomize the first tangent direction so that tangent forces act from different direction when new contacts are formed.
@@ -680,6 +693,43 @@ public:
 		deltaVel[bodyIndex[index].indexB].vLin += bufConstNormalM_B[index].vLin * bufDeltaLambda[index].s1 + bufConstTangentM_B[index].vLin * bufDeltaLambda[index].s2;
 		deltaVel[bodyIndex[index].indexB].vAng += bufConstNormalM_B[index].vAng * bufDeltaLambda[index].s1 + bufConstTangentM_B[index].vAng * bufDeltaLambda[index].s2;
 	}
+
+	void processContactA(unsigned int index, double mu) {
+				vec3 deltaALin = deltaVel[bodyIndex[index].indexA].vLin;
+				vec3 deltaAAng = deltaVel[bodyIndex[index].indexA].vAng;
+				vec3 deltaBLin = deltaVel[bodyIndex[index].indexB].vLin;
+				vec3 deltaBAng = deltaVel[bodyIndex[index].indexB].vAng;
+
+		    	scalar lambda_final1 = bufLambda[index].s1 - bufB[index].s1 - glm::dot(bufConstNormalD_A[index].vLin, deltaALin)
+		    		- glm::dot(bufConstNormalD_A[index].vAng, deltaAAng) - glm::dot(bufConstNormalD_B[index].vLin, deltaBLin)
+	    			- glm::dot(bufConstNormalD_B[index].vAng, deltaBAng);
+
+		    	if (lambda_final1 < 0) lambda_final1 = 0;
+
+		    	scalar lambda_final2 = bufLambda[index].s2 - bufB[index].s2 - glm::dot(bufConstTangentD_A[index].vLin, deltaALin)
+	    			- glm::dot(bufConstTangentD_A[index].vAng, deltaAAng) - glm::dot(bufConstTangentD_B[index].vLin, deltaBLin)
+		    		- glm::dot(bufConstTangentD_B[index].vAng, deltaBAng);
+
+		    	scalar max_tangent1 = mu * lambda_final1;
+		    	if (lambda_final2 < - max_tangent1) lambda_final2 = - max_tangent1;
+		    	else if (lambda_final2 > max_tangent1) lambda_final2 = max_tangent1;
+
+		    	scalar deltaLambda1 = lambda_final1 - bufLambda[index].s1;
+		    	scalar deltaLambda2 = lambda_final2 - bufLambda[index].s2;
+
+		    	bufLambda[index].s1 = lambda_final1;
+		    	bufLambda[index].s2 = lambda_final2;
+
+		    	numContactsA = 1;
+		    	numContactsB = 1;
+		    	deltaVel[bodyIndex[index].indexA].vLin += bufConstNormalM_A[index].vLin * (deltaLambda1 * (scalar)numContactsA) + bufConstTangentM_A[index].vLin * (deltaLambda2 * (scalar)numContactsA);
+				deltaVel[bodyIndex[index].indexA].vAng += bufConstNormalM_A[index].vAng * (deltaLambda1 * (scalar)numContactsA) + bufConstTangentM_A[index].vAng * (deltaLambda2 * (scalar)numContactsA);
+
+				deltaVel[bodyIndex[index].indexB].vLin += bufConstNormalM_B[index].vLin * (deltaLambda1 * (scalar)numContactsB) + bufConstTangentM_B[index].vLin * (deltaLambda2 * (scalar)numContactsB);
+				deltaVel[bodyIndex[index].indexB].vAng += bufConstNormalM_B[index].vAng * (deltaLambda1 * (scalar)numContactsB) + bufConstTangentM_B[index].vAng * (deltaLambda2 * (scalar)numContactsB);
+
+				processed = true;
+		}
 
 };
 

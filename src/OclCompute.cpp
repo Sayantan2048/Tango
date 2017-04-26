@@ -13,6 +13,8 @@ std::vector<cl_command_queue> OclCompute::cmdQs;
 std::vector<std::vector<cl_kernel>> OclCompute::kernels;
 std::vector<unsigned long> OclCompute::maxGlobalMemSz;
 std::vector<unsigned long> OclCompute::maxMemAllocSz;
+unsigned int OclCompute::iterCount;
+scalar OclCompute::mu;
 
 
 std::vector<cl_mem> OclCompute::clBufDeltaVel;
@@ -177,9 +179,10 @@ void OclCompute::_2_initKernels() {
 				if (std::string(OCL_INCLUDE_PATH) != "")
 					build_opts = std::string("-I ") + std::string(OCL_INCLUDE_PATH);
 // Add build opts
-#if 0
-				build_opts += "-D SOME_PARA=" + "VAL";
-#endif
+
+				build_opts += "-D ITER_COUNT=" + std::to_string(iterCount) +
+						" -D MU=" + std::to_string(mu);
+
 				cl_int build_code = clBuildProgram(program, 0, NULL,
 						build_opts.c_str(), NULL, NULL);
 
@@ -225,6 +228,12 @@ void OclCompute::_2_initKernels() {
 				HANDLE_CLERROR(err, "Failed to build kernel.");
 
 				kernelList.push_back(clCreateKernel(program, "jacobi_v3_split2", &err));
+				HANDLE_CLERROR(err, "Failed to build kernel.");
+
+				kernelList.push_back(clCreateKernel(program, "jacobi_comb_v4", &err));
+				HANDLE_CLERROR(err, "Failed to build kernel.");
+
+				kernelList.push_back(clCreateKernel(program, "jacobi_norm", &err));
 				HANDLE_CLERROR(err, "Failed to build kernel.");
 
 				HANDLE_CLERROR(clReleaseProgram(program), "Failed to release Program.");
@@ -364,6 +373,32 @@ void OclCompute::_4_setKernelArgsStatic() {
 		HANDLE_CLERROR(clSetKernelArg(kernels[i][7], ctr++, sizeof(cl_mem), &clBufLambda[i]), "Failed to set kernel args.");
 		HANDLE_CLERROR(clSetKernelArg(kernels[i][7], ctr++, sizeof(cl_mem), &clBufDeltaLambda[i]), "Failed to set kernel args.");
 
+		ctr = 0;
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufDeltaVel[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufBodyIndex[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstNormalD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstTangentD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstNormalD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstTangentD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstNormalM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstTangentM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstNormalM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufConstTangentM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufB[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][8], ctr++, sizeof(cl_mem), &clBufLambda[i]), "Failed to set kernel args.");
+
+		ctr = 0;
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufBodyIndex[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstNormalD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstTangentD_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstNormalD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstTangentD_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstNormalM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstTangentM_A[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstNormalM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufConstTangentM_B[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufDeltaLambda[i]), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], ctr++, sizeof(cl_mem), &clBufB[i]), "Failed to set kernel args.");
 	}
 }
 
@@ -377,7 +412,7 @@ void OclCompute::_0_run(unsigned int nBody, unsigned int nContacts,
 			const std::vector<vec6> &bufConstTangentD_A, const std::vector<vec6> &bufConstTangentM_A,
 			const std::vector<vec6> &bufConstNormalD_B, const std::vector<vec6> &bufConstNormalM_B,
 			const std::vector<vec6> &bufConstTangentD_B, const std::vector<vec6> &bufConstTangentM_B,
-			const std::vector<vec2> &bufB) {
+			const std::vector<vec2> &bufB, std::vector<vec2> &bufLambda) {
 
 	for (size_t i = 0; i < activeDevices.size(); i++) {
 		HANDLE_CLERROR(clEnqueueWriteBuffer(cmdQs[i], clBufBodyIndex[i], CL_FALSE, 0, sizeof(ivec2) * nContacts , &bodyIndex[0], 0, NULL, NULL), "Error writing to buffer.");
@@ -416,12 +451,14 @@ void OclCompute::_0_run(unsigned int nBody, unsigned int nContacts,
 		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][0], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 */
 		size_t gws;
-		size_t lws = 1;
+		size_t lws = 32;
 		gws = nContacts;
 		/*for (int j = 0; j < 500; j++) {
 			HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][1], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 			HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][2], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		}*/
+
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][3], 11, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");
 		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][3], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		//HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][4], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 
@@ -444,13 +481,31 @@ void OclCompute::_0_run(unsigned int nBody, unsigned int nContacts,
 		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][6], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][7], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
 		*/
+		//HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][8], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
+		//HANDLE_CLERROR(clEnqueueReadBuffer(cmdQs[i], clBufLambda[i], CL_FALSE, 0, sizeof(vec2) * nContacts , &bufLambda[0], 0, NULL, NULL), "Error reading from buffer.");
+
+		/*HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 11, sizeof(cl_uint), &nContacts), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 12, 2 * sizeof(uint) * nContacts, NULL), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 13, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 14, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 15, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+		HANDLE_CLERROR(clSetKernelArg(kernels[i][9], 16, 6 * sizeof(scalar) * nContacts, NULL), "Failed to set kernel args.");
+
+		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][9], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
+		HANDLE_CLERROR(clEnqueueNDRangeKernel (cmdQs[i], kernels[i][3], 1, NULL, &gws, &lws, 0, NULL, NULL), "Failed to execute kernel");
+*/
+
+
 		HANDLE_CLERROR(clEnqueueReadBuffer(cmdQs[i], clBufDeltaVel[i], CL_TRUE, 0, sizeof(vec6) * nBody , &deltaVel[0], 0, NULL, NULL), "Error reading from buffer.");
 	}
 }
 
 
 
-void OclCompute::init() {
+void OclCompute::init(unsigned int iter, scalar frictionCoeff) {
+	iterCount = iter;
+	mu = frictionCoeff;
+
 	_0_checkDevices();
 
 	std::vector<unsigned int> devList;
@@ -460,7 +515,6 @@ void OclCompute::init() {
 	_2_initKernels();
 	_3_createBuffer();
 	_4_setKernelArgsStatic();
-
 }
 
 std::string OclCompute::readSource(std::string fName) {

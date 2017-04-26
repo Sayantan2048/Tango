@@ -49,10 +49,12 @@ class OclCompute {
 	static std::vector<cl_mem> clBufLambda;
 	static std::vector<cl_mem> clBufDeltaLambda;
 
+	static unsigned int iterCount;
+	static scalar mu;
 	static void _3_createBuffer();
 	static void _4_setKernelArgsStatic();
 public:
-	static void init();
+	static void init(unsigned int iterCount, scalar mu);
 
 	static void _0_run(unsigned int nBody, unsigned int nContacts,
 				std::vector<vec6> &deltaVel, const std::vector<ivec2> &bodyIndex,
@@ -60,7 +62,7 @@ public:
 				const std::vector<vec6> &bufConstTangentD_A, const std::vector<vec6> &bufConstTangentM_A,
 				const std::vector<vec6> &bufConstNormalD_B, const std::vector<vec6> &bufConstNormalM_B,
 				const std::vector<vec6> &bufConstTangentD_B, const std::vector<vec6> &bufConstTangentM_B,
-				const std::vector<vec2> &bufB);
+				const std::vector<vec2> &bufB, std::vector<vec2> &bufLambda);
 };
 
 #define HANDLE_CLERROR(cl_error, message)	  \

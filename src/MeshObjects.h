@@ -46,14 +46,14 @@ void MeshObjects::cubeObject()
     RGBA colours[nVertices];
     RGBA *pColour = colours;
     // Use render system to convert colour value since colour packing varies
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //0 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //1 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //2 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //3 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //4 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //5 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //6 colour
-    rs->convertColourValue(ColourValue(1.0,1.0,1.0), pColour++); //7 colour
+    rs->convertColourValue(ColourValue(0.2,0.7,0.3), pColour++); //0 colour
+    rs->convertColourValue(ColourValue(0.2,0.3,0.3), pColour++); //1 colour
+    rs->convertColourValue(ColourValue(0.2,0.7,0.3), pColour++); //2 colour
+    rs->convertColourValue(ColourValue(0.2,0.3,0.3), pColour++); //3 colour
+    rs->convertColourValue(ColourValue(0.2,0.7,0.3), pColour++); //4 colour
+    rs->convertColourValue(ColourValue(0.2,0.3,0.3), pColour++); //5 colour
+    rs->convertColourValue(ColourValue(0.2,0.7,0.3), pColour++); //6 colour
+    rs->convertColourValue(ColourValue(0.2,0.3,0.3), pColour++); //7 colour
  
     /// Define 12 triangles (two triangles per cube face)
     /// The values in this table refer to vertices in the above table
