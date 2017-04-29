@@ -1,3 +1,10 @@
+Videos:
+Object Picking: https://youtu.be/e5cPB-T38BQ
+Pile of Objects using GPU: https://youtu.be/mK0WW5BIDwI
+Pile of Objects using CPU: https://youtu.be/3cQoyWA8VRU
+Random pile of objects using GPU: https://youtu.be/Q7vJLqXqCxM
+Random pile of objects using CPU:https://youtu.be/j9Sr3QhxbDI
+
 Installing and Running the program:
 
 Install OIS(required for Ogre3d)
