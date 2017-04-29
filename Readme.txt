@@ -1,3 +1,5 @@
+This is my McGill COMP 559 Computer Animation final project repo.
+
 Videos:
 Object Picking: https://youtu.be/e5cPB-T38BQ
 Pile of Objects using GPU: https://youtu.be/mK0WW5BIDwI
