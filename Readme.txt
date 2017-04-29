@@ -60,3 +60,4 @@ material Examples/Cursor
    }
 }
 
+Also modify the paths inside cfg files if needed.
