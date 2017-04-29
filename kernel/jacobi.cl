@@ -1,3 +1,11 @@
+/*
+ * This software is Copyright (c) 2017 Sayantan Datta <std2048 at gmail dot com>
+ * and it is hereby released to the general public under the following terms:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted for non-profit
+ * and non-commericial purposes.
+ */
+
+
 typedef float scalar;
 typedef float2 vec2;
 typedef float4 vec4;
@@ -164,6 +172,7 @@ __kernel void jacobi_parallel(__global scalar *deltaVel, __global uint *bufBodyI
   // Loop until source stops changing   
 }*/
 
+//https://streamcomputing.eu/blog/2016-02-09/atomic-operations-for-floats-in-opencl-improved/
 inline void atomicAdd(volatile __global float *addr, float val) {
   union{
     unsigned int u32;

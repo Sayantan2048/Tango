@@ -1,3 +1,10 @@
+/*
+ * This software is Copyright (c) 2017 Sayantan Datta <std2048 at gmail dot com>
+ * and it is hereby released to the general public under the following terms:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted for non-profit
+ * and non-commericial purposes.
+ */
+
 #ifndef __RigidBodySystem_h_
 #define __RigidBodySystem_h_
 
@@ -114,8 +121,5 @@ double RigidBodySystem::dt = 0.05;
 double RigidBodySystem::bounce = 0.0;
 double RigidBodySystem::mu = 0.33;
 double RigidBodySystem::gravity = -0.1;
-//---------------------------------------------------------------------------
 
-#endif // #ifndef __TutorialApplication_h_
-
-//---------------------------------------------------------------------------
+#endif

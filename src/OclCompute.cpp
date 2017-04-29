@@ -1,3 +1,9 @@
+/*
+ * This software is Copyright (c) 2017 Sayantan Datta <std2048 at gmail dot com>
+ * and it is hereby released to the general public under the following terms:
+ * Redistribution and use in source and binary forms, with or without modification, are permitted for non-profit
+ * and non-commericial purposes.
+ */
 #include "OclCompute.h"
 #include <iostream>
 #include <fstream>
