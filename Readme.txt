@@ -1,4 +1,4 @@
-This is my McGill COMP 559 Computer Animation final project repo.
+This is my McGill COMP 559 Computer Animation final project repo. Report for the project is in Report.pdf. Also note that the  report is written in ACM-Siggraph format and is not an actual publication.
 
 Videos:
 Object Picking: https://youtu.be/e5cPB-T38BQ
